@@ -1,6 +1,5 @@
 ﻿#pragma strict
 
-enum ItemType{Empty, Gun, Shield, Gravigun, Knife, Wings};
 var Item : ItemType;
 
 function Start () {
