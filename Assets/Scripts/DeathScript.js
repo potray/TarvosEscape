@@ -1,7 +1,6 @@
 ﻿#pragma strict
 
 static var returnPosition : Vector3;
-var platformScript : PlatformScript;
 
 function Start () {
 
