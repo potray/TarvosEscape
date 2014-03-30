@@ -12,7 +12,9 @@ function Update () {
 	this.gameObject.transform.Rotate (Vector3.up * Time.deltaTime * 500);
 }
 
-function OnTriggerEnter (){
-	playerInventoryScript.setItem(item);
-	Destroy(this.gameObject);
+function OnTriggerEnter (coll : Collider){
+	if (coll.tag == "Player"){
+		playerInventoryScript.setItem(item);
+		Destroy(this.gameObject);
+	}
 }
