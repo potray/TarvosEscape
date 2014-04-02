@@ -47,9 +47,9 @@ function Update () {
 		}
 		//Intercambio anterior con siguiente.
 		if (nextItem != null)
-			nextItem.active = true;
+			nextItem.SetActive(true);
 		if (previousItem != null)
-			previousItem.active = false;
+			previousItem.SetActive(false);
 		previousItem = nextItem;
 		
 		currentItem = playerItem;

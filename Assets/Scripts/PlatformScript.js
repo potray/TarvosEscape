@@ -1,35 +1,22 @@
 ﻿#pragma strict
 
 var deathScript : DeathScript;
-enum PlatformType{normal, upDown, leftRight, rotating};
-var platformType : PlatformType;
-var initialPosition : Vector3;
-var mode : boolean = true;
+var movingSpeed : float;
+var startTime : float;
+var anim : Animation = null;
 
 
 function Start () {
-	initialPosition = this.gameObject.transform.position;
+	//Si la plataforma es animada, retraso la animacion y le cambio la velocidad.
+	if (anim != null){
+		if (movingSpeed != 0)
+			animation[anim.clip.name].speed = movingSpeed;
+		yield WaitForSeconds(startTime);
+		anim.Play();
+	}
 }
 
 function Update () {
-	switch (platformType){
-		case PlatformType.upDown:
-			//Mode: true -> arriba, false -> abajo.
-			var directionVector : Vector3;
-			if (this.gameObject.transform.position.y > initialPosition.y + 10)		
-				mode = false;	
-			else if (this.gameObject.transform.position.y < initialPosition.y)	
-				mode = true;
-				
-			if (mode)
-				directionVector = Vector3.up;
-			else
-				directionVector = Vector3.down;
-				
-			this.gameObject.transform.Translate (directionVector * Time.deltaTime * 5);
-		break;
-		case PlatformType.normal: break;
-	}
 }
 
 function OnTriggerExit(){
