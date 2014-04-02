@@ -1,9 +1,10 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Scripts\PlayerInventoryScript.js">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Scripts\PickableItemScript.js">
     <Files>
-      <File FileName="Assets\Scripts\PlayerInventoryScript.js" Line="3" Column="71" />
-      <File FileName="Assets\Scripts\PickableItemScript.js" Line="5" Column="40" />
+      <File FileName="Assets\Scripts\InGameGUIScript.js" Line="21" Column="2" />
+      <File FileName="Assets\Scripts\PlayerInventoryScript.js" Line="20" Column="25" />
+      <File FileName="Assets\Scripts\PickableItemScript.js" Line="12" Column="69" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>

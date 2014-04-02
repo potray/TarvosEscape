@@ -1,0 +1,98 @@
+fileFormatVersion: 2
+guid: e83070c54c42d9246a3716f90d0dee2f
+ModelImporter:
+  serializedVersion: 15
+  fileIDToRecycleName:
+    100000: Armature
+    100002: Conrad_Gun
+    100004: //RootNode
+    100006: Conrad_Gun_Laser
+    100008: Conrad_Gun_Light
+    100010: Conrad_Gun_Plug
+    100012: CRD_GUN1
+    100014: CRD_GUN1_BARREL
+    100016: CRD_GUN1_CYLINDER
+    100018: CRD_GUN1_DUMMYSOCK
+    100020: CRD_GUN1_LASERSOCK
+    100022: CRD_GUN1_MUSLESOCK
+    100024: CRD_GUN1_TRIGGER
+    100026: CRD_GUN1_TRIGGER_End
+    100028: GUN1_BARREL_End
+    100030: GUN1_HANDLE
+    400000: Armature
+    400002: Conrad_Gun
+    400004: //RootNode
+    400006: Conrad_Gun_Laser
+    400008: Conrad_Gun_Light
+    400010: Conrad_Gun_Plug
+    400012: CRD_GUN1
+    400014: CRD_GUN1_BARREL
+    400016: CRD_GUN1_CYLINDER
+    400018: CRD_GUN1_DUMMYSOCK
+    400020: CRD_GUN1_LASERSOCK
+    400022: CRD_GUN1_MUSLESOCK
+    400024: CRD_GUN1_TRIGGER
+    400026: CRD_GUN1_TRIGGER_End
+    400028: GUN1_BARREL_End
+    400030: GUN1_HANDLE
+    4300000: Conrad_Gun_Laser
+    4300002: Conrad_Gun_Light
+    4300004: Conrad_Gun
+    4300006: Conrad_Gun_Plug
+    9500000: //RootNode
+    13700000: Conrad_Gun
+    13700002: Conrad_Gun_Laser
+    13700004: Conrad_Gun_Light
+    13700006: Conrad_Gun_Plug
+  materials:
+    importMaterials: 1
+    materialName: 0
+    materialSearch: 1
+  animations:
+    legacyGenerateAnimations: 4
+    bakeSimulation: 0
+    optimizeGameObjects: 0
+    animationCompression: 1
+    animationRotationError: .5
+    animationPositionError: .5
+    animationScaleError: .5
+    animationWrapMode: 0
+    extraExposedTransformPaths: []
+    clipAnimations: []
+    isReadable: 1
+  meshes:
+    lODScreenPercentages: []
+    globalScale: 1
+    meshCompression: 0
+    addColliders: 0
+    importBlendShapes: 1
+    swapUVChannels: 0
+    generateSecondaryUV: 0
+    useFileUnits: 1
+    optimizeMeshForGPU: 1
+    weldVertices: 1
+    secondaryUVAngleDistortion: 8
+    secondaryUVAreaDistortion: 15.000001
+    secondaryUVHardAngle: 88
+    secondaryUVPackMargin: 4
+  tangentSpace:
+    normalSmoothAngle: 60
+    splitTangentsAcrossUV: 1
+    normalImportMode: 0
+    tangentImportMode: 1
+  importAnimation: 1
+  copyAvatar: 0
+  humanDescription:
+    human: []
+    skeleton: []
+    armTwist: .5
+    foreArmTwist: .5
+    upperLegTwist: .5
+    legTwist: .5
+    armStretch: .0500000007
+    legStretch: .0500000007
+    feetSpacing: 0
+    rootMotionBoneName: 
+  lastHumanDescriptionAvatarSource: {instanceID: 0}
+  animationType: 2
+  userData: 

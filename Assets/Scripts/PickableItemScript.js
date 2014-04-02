@@ -9,7 +9,7 @@ function Start () {
 }
 
 function Update () {
-	this.gameObject.transform.Rotate (Vector3.up * Time.deltaTime * 500);
+	this.gameObject.transform.Rotate (Vector3.up * Time.deltaTime * 100);
 }
 
 function OnTriggerEnter (coll : Collider){
