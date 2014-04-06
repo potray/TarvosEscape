@@ -9,6 +9,7 @@ var nextItem : GameObject;
 var gun : GameObject;
 var knife : GameObject;
 var gravigun : GameObject;
+var rocketlauncher : GameObject;		// Incluyo el lanzacohetes, todavia no funciona.
 
 function Start () {
 	//Busco el script en la jerarquia, lo tiene el padre.
@@ -30,6 +31,9 @@ function Update () {
 			case ItemType.Gun:
 				nextItem = gun;
 				print("Activare gun");
+				break;
+			case ItemType.RocketLauncher:
+				nextItem = rocketlauncher;
 				break;
 			case ItemType.Shield:
 				break;

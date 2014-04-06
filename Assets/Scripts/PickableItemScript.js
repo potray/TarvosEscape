@@ -1,6 +1,6 @@
 ﻿#pragma strict
 
-enum ItemType{Empty, Gun, Shield, Gravigun, Knife, Wings};
+enum ItemType{Empty, Gun, RocketLauncher, Shield, Gravigun, Knife, Wings, Coin};
 var item : ItemType;
 var playerInventoryScript : PlayerInventoryScript;
 
