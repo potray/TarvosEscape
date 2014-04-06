@@ -61,7 +61,12 @@ function Update () {
 }
 
 function setItem (newItem : ItemType){
-	Item = newItem;
+	if (Item == ItemType.Coin) {
+			playerCoins++;
+			print("Monedas: " + playerCoins);
+		}
+	else 
+		Item = newItem;
 }
 
 function emptyItem (){
