@@ -4,6 +4,7 @@ var deathScript : DeathScript;
 var movingSpeed : float;
 var startTime : float;
 var anim : Animation = null;
+var isTriggered : boolean = false;
 
 
 function Start () {
@@ -12,7 +13,8 @@ function Start () {
 		if (movingSpeed != 0)
 			animation[anim.clip.name].speed = movingSpeed;
 		yield WaitForSeconds(startTime);
-		anim.Play();
+		if (!isTriggered)
+			anim.Play();
 	}
 }
 
@@ -24,4 +26,9 @@ function OnTriggerExit(){
 	var playerObject = GameObject.Find("Player");
 	var playerPosition : Vector3 = playerObject.transform.position;
 	deathScript.setReturnPosition(playerPosition);	
+}
+
+function OnTriggerEnter(){
+	if (isTriggered)
+		anim.Play();
 }
