@@ -9,7 +9,7 @@ var nextItem : GameObject;
 var gun : GameObject;
 var knife : GameObject;
 var gravigun : GameObject;
-var rocketlauncher : GameObject;		// Incluyo el lanzacohetes, todavia no funciona.
+var rocketlauncher : GameObject;
 
 function Start () {
 	//Busco el script en la jerarquia, lo tiene el padre.
