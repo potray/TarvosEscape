@@ -1,0 +1,82 @@
+﻿#pragma strict
+
+var upgrade : int = 0;
+var firstUpgradePrice : int;
+var secondUpgradePrice : int;
+var thirdUpgradePrice : int;
+var fourthUpgradePrice : int;
+var maxUpgrades : int = 3;
+
+//Para buscar automaticamente los cuadrados.
+var searchForNames : boolean = true;
+
+var currentMoney : int;
+
+var firstUpgrade_no : GameObject;
+var firstUpgrade_yes : GameObject;
+var secondUpgrade_no : GameObject;
+var secondUpgrade_yes : GameObject;
+var thirdUpgrade_no : GameObject;
+var thirdUpgrade_yes : GameObject;
+var fourhtUpgrade_no : GameObject;
+var fourhUpgrade_yes : GameObject;
+
+var prices : int [];
+var upgradeYes : GameObject[];
+var upgradeNo : GameObject[];
+
+function Start () {
+	
+	if (searchForNames){
+		firstUpgrade_no = transform.Find("Upgrade1_No").gameObject;
+		firstUpgrade_yes = transform.Find("Upgrade1_Yes").gameObject;
+		secondUpgrade_no = transform.Find("Upgrade2_No").gameObject;
+		secondUpgrade_yes = transform.Find("Upgrade2_Yes").gameObject;
+		thirdUpgrade_no = transform.Find("Upgrade3_No").gameObject;
+		thirdUpgrade_yes = transform.Find("Upgrade3_Yes").gameObject;
+	}
+
+	//Meto los precios en un array
+	prices = new int[maxUpgrades];
+	prices[0] = (firstUpgradePrice);
+	prices[1] = (secondUpgradePrice);
+	prices[2] = (thirdUpgradePrice);
+	
+	//Meto los cuadraditos en dos arrays
+	upgradeYes = new GameObject[maxUpgrades];	
+	upgradeNo = new GameObject[maxUpgrades];
+	
+	upgradeYes[0] = (firstUpgrade_yes);
+	upgradeYes[1] = (secondUpgrade_yes);
+	upgradeYes[2] = (thirdUpgrade_yes);
+	
+	upgradeNo[0] = (firstUpgrade_no);
+	upgradeNo[1] = (secondUpgrade_no);
+	upgradeNo[2] = (thirdUpgrade_no);
+	
+	if (maxUpgrades == 4){
+		if (searchForNames){
+			fourhtUpgrade_no = transform.Find("Upgrade4_No").gameObject;
+			fourhUpgrade_yes = transform.Find("Upgrade4_Yes").gameObject;
+		}
+		prices[3] = (fourthUpgradePrice);
+		upgradeYes[3] = (fourhUpgrade_yes);
+		upgradeNo[3] = (fourhtUpgrade_no);
+		
+	}
+		
+	
+}
+
+function Update () {
+
+}
+
+function OnClick (){
+	if (currentMoney >= prices[upgrade] && upgrade < maxUpgrades){
+		upgradeYes[upgrade].SetActive(true);
+		upgradeNo[upgrade].SetActive(false);
+		if (upgrade < maxUpgrades - 1)		
+			upgrade ++;
+	}
+}
