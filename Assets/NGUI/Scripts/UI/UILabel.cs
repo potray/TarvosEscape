@@ -34,7 +34,8 @@ public class UILabel : UIWidget
 	[HideInInspector][SerializeField] Color mEffectColor = Color.black;
 	[HideInInspector][SerializeField] UIFont.SymbolStyle mSymbols = UIFont.SymbolStyle.Uncolored;
 	[HideInInspector][SerializeField] Vector2 mEffectDistance = Vector2.one;
-	[HideInInspector][SerializeField] bool mShrinkToFit = false;
+	[HideInInspector][SerializeField] bool mShrinkToFit = false;	
+	[HideInInspector][SerializeField] bool isCoins = false;
 
 	/// <summary>
 	/// Obsolete, do not use. Use 'mMaxLineWidth' instead.
@@ -53,7 +54,6 @@ public class UILabel : UIWidget
 	Vector3 mLastScale = Vector3.one;
 	Vector2 mSize = Vector2.zero;
 	bool mPremultiply = false;
-
 	/// <summary>
 	/// Function used to determine if something has changed (and thus the geometry must be rebuilt)
 	/// </summary>
