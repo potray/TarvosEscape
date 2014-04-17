@@ -17,7 +17,7 @@ function OnTriggerEnter (coll : Collider){
 	addMoney (playerInventory.playerCoins);
 	
 	//TEMPORAL
-	Application.LoadLevel(2);
+	Application.LoadLevel(1);
 }
 
 function addMoney(money : int){
