@@ -14,6 +14,7 @@ var bulletInitialSpeed : float = 20f;
 
 function Start () {
 	Item = ItemType.Empty;
+	playerCoins = 0;
 }
 
 function Update () {
@@ -52,16 +53,10 @@ function Update () {
 		}
 		emptyItem();
 	}
-	
-	if (Item == ItemType.Coin) {
-		playerCoins++;
-		print("Monedas: " + playerCoins);
-		emptyItem();
-	}
 }
 
 function setItem (newItem : ItemType){
-	if (Item == ItemType.Coin) {
+	if (newItem == ItemType.Coin) {
 			playerCoins++;
 			print("Monedas: " + playerCoins);
 		}
