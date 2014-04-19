@@ -29,6 +29,8 @@ function OnTriggerExit(){
 }
 
 function OnTriggerEnter(){
-	if (isTriggered)
+	if (isTriggered){
+		yield WaitForSeconds(startTime);
 		anim.Play();
+	}
 }
