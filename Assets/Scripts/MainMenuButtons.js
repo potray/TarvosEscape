@@ -18,13 +18,13 @@ function OnGUI() {
 		// Boton de carga de partida.
 		print("Load game.");
 		//TEMPORAL: Carga el primer nivel
-		Application.LoadLevel("Level 1");
+		Application.LoadLevel(1);
 	}
 	if (GUI.Button(Rect(Screen.width/2-30,Screen.height/2-20,100,30),"New Game")) {
 		// Boton de nuevo juego.
 		print("New Game.");
 		//TEMPORAL: Carga el primer nivel
-		Application.LoadLevel("Level 1");
+		Application.LoadLevel(1);
 		
 		//Reseteo las monedas		
 		PlayerPrefs.SetInt("Money", 0);	
