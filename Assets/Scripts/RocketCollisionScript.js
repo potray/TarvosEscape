@@ -9,8 +9,9 @@ function Update () {
 }
 
 function OnCollisionEnter (hit : Collision) {
-
 	// En caso de que el cohete colisione con un objeto, destruir tanto el cohete como dicho objeto.
-	Destroy(gameObject);
-	Destroy(hit.gameObject);
+	if (hit.collider.tag != "Player"){
+		Destroy(gameObject);
+		Destroy(hit.gameObject);
+	}
 }

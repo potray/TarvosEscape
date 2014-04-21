@@ -6,6 +6,9 @@ static var playerCoins : int = 0;
 var bulletPrefab : GameObject;
 var rocketPrefab : GameObject;
 var bulletInitialSpeed : float = 20f;
+var knifeClip : AudioClip;
+var rocketLauncherClip : AudioClip;
+var gunClip : AudioClip;
 
 // Para que las monedas se guarden entre niveles:
 // var playerInventoryScript : PlayerInventoryScript;
@@ -27,12 +30,14 @@ function Update () {
 				var cam : Camera = Camera.main;
 				var bullet : GameObject = Instantiate(bulletPrefab, cam.transform.position + cam.transform.forward, cam.transform.rotation);
 				bullet.rigidbody.AddForce(cam.transform.forward * bulletInitialSpeed, ForceMode.Impulse);
+				AudioSource.PlayClipAtPoint(gunClip, Camera.main.transform.position);					
 				break;
 			case ItemType.RocketLauncher:
 				print("Usado lanzacohetes");
 				var camRocketLauncher : Camera = Camera.main;
 				var rocket : GameObject = Instantiate(rocketPrefab, camRocketLauncher.transform.position + camRocketLauncher.transform.forward, camRocketLauncher.transform.rotation);
-				rocket.rigidbody.AddForce(camRocketLauncher.transform.forward * bulletInitialSpeed, ForceMode.Impulse);
+				rocket.rigidbody.AddForce(camRocketLauncher.transform.forward * bulletInitialSpeed * 2, ForceMode.Impulse);
+				AudioSource.PlayClipAtPoint(rocketLauncherClip, Camera.main.transform.position);	
 				break;
 			case ItemType.Shield:
 				//Temporal
@@ -44,7 +49,8 @@ function Update () {
 				break;
 			case ItemType.Knife:
 				//Temporal
-				print("Usado cuchillo");
+				print("Usado cuchillo");				
+				AudioSource.PlayClipAtPoint(knifeClip, Camera.main.transform.position);	
 				break;
 			case ItemType.Wings:
 				//Temporal

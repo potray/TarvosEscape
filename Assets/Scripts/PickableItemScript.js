@@ -3,6 +3,7 @@
 enum ItemType{Empty, Gun, RocketLauncher, Shield, Gravigun, Knife, Wings, Coin};
 var item : ItemType;
 var playerInventoryScript : PlayerInventoryScript;
+var pickupClip: AudioClip;
 
 function Start () {
 
@@ -14,7 +15,8 @@ function Update () {
 
 function OnTriggerEnter (coll : Collider){
 	if (coll.tag == "Player"){
-		playerInventoryScript.setItem(item);
+		playerInventoryScript.setItem(item);	
+		AudioSource.PlayClipAtPoint(pickupClip, transform.position);
 		Destroy(this.gameObject);
 	}
 }
