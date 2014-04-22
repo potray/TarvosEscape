@@ -33,6 +33,6 @@ function Update () {
 		transform.position = Vector3(-18,transform.position.y,transform.position.z);
 	}
 	
-	transform.Rotate(Random.Range(0.15,0.2),0,0);
+	//transform.Rotate(Random.Range(0.15,0.2),0,0);
 	transform.Translate(transform.right * Time.deltaTime*speed);
 }
