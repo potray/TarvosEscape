@@ -52,7 +52,7 @@ function OnGUI() {
 		if (GUI.Button(Rect(Screen.width/2-30,Screen.height/2+30,100,30),"Main Menu")) {
 			// Boton de salir al menu principal.
 			print("Main Menu.");
-			Application.LoadLevel(0);
+			Application.LoadLevel(1);
 			quitMenu();
 		}
 	}
