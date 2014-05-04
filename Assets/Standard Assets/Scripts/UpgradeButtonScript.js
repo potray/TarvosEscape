@@ -1,7 +1,7 @@
 ﻿#pragma strict
 
-enum upgradeTypes {Gun, Knife, Gravigun, Shield, Wings, Jump, Speed, Magnet, Stun};
-enum buttonTypes {Upgrade, Exit};
+enum upgradeTypes {Gun, Knife, Gravigun, Shield, Wings, RocketLauncher, Jump, CoinValue, Magnet, Stun};
+enum buttonTypes {Upgrade, Exit, FreeCoins};
 
 var upgrade : int = 0;
 var firstUpgradePrice : int;
@@ -9,6 +9,11 @@ var secondUpgradePrice : int;
 var thirdUpgradePrice : int;
 var fourthUpgradePrice : int;
 var maxUpgrades : int = 3;
+
+var infoFirstUpgrade : String;
+var infoSecondUpgrade : String; 
+var infoThirdUpgrade : String;
+var infoFourthUpgrade : String;
 
 //Para buscar automaticamente los cuadrados.
 var searchForNames : boolean = true;
@@ -28,6 +33,7 @@ var fourhUpgrade_yes : GameObject;
 var prices : int [];
 var upgradeYes : GameObject[];
 var upgradeNo : GameObject[];
+var infoUpgrades : String [];
 
 function Start () {
 	if (buttonType == buttonTypes.Upgrade){
@@ -47,6 +53,12 @@ function Start () {
 		prices[1] = (secondUpgradePrice);
 		prices[2] = (thirdUpgradePrice);
 		
+		//Meto las descripciones en un array		
+		infoUpgrades = new String [maxUpgrades];
+		infoUpgrades[0] = infoFirstUpgrade;
+		infoUpgrades[1] = infoSecondUpgrade;
+		infoUpgrades[2] = infoThirdUpgrade;
+		
 		//Meto los cuadraditos en dos arrays.
 		upgradeYes = new GameObject[maxUpgrades];	
 		upgradeNo = new GameObject[maxUpgrades];
@@ -59,15 +71,17 @@ function Start () {
 		upgradeNo[1] = (secondUpgrade_no);
 		upgradeNo[2] = (thirdUpgrade_no);
 		
+		
 		//Enlazo las variables del cuarto cuadrito si es necesario.
 		if (maxUpgrades == 4){
 			if (searchForNames){
 				fourhtUpgrade_no = transform.Find("Upgrade4_No").gameObject;
 				fourhUpgrade_yes = transform.Find("Upgrade4_Yes").gameObject;
 			}
-			prices[3] = (fourthUpgradePrice);
-			upgradeYes[3] = (fourhUpgrade_yes);
-			upgradeNo[3] = (fourhtUpgrade_no);		
+			prices[3] = fourthUpgradePrice;
+			upgradeYes[3] = fourhUpgrade_yes;
+			upgradeNo[3] = fourhtUpgrade_no;	
+			infoUpgrades[3] = infoFourthUpgrade;
 		}
 			
 		//Cargo la upgrade y actualizo los cuadraditos en consecuencia.
@@ -84,13 +98,17 @@ function Update () {
 	
 }
 
+function getPrices (){
+	return prices;
+}
+
 function OnClick (){
 	switch (buttonType){
 		case buttonTypes.Upgrade:
 			var currentMoney : int = PlayerPrefs.GetInt("Money");
 			if (upgrade < maxUpgrades)
 				//No se puede anidar porque se accede a un array cuyo indice se va a salir de su rango.
-				if (currentMoney >= prices[upgrade]){
+				if (currentMoney >= prices[upgrade] && upgrade != maxUpgrades){
 					//Activo y desactivo los cuadraditos pertinentes
 					upgradeYes[upgrade].SetActive(true);
 					upgradeNo[upgrade].SetActive(false);
@@ -100,14 +118,15 @@ function OnClick (){
 					PlayerPrefs.SetInt("Money", currentMoney);
 					
 					//Actualizo la mejora
-					if (upgrade < maxUpgrades - 1)		
-						upgrade ++;			
+					upgrade ++;			
 						
 					PlayerPrefs.SetInt(upgradeType.ToString(), upgrade);						
 				}
 			break;
 		case buttonTypes.Exit:
 			Application.LoadLevel(0);
+		case buttonTypes.FreeCoins:
+			PlayerPrefs.SetInt("Money", PlayerPrefs.GetInt("Money") + 1000);
 	}
 
 }
