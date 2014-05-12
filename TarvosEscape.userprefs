@@ -1,8 +1,10 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" PreferredExecutionTarget="MonoDevelop.Default" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Scripts\AnimationTriggererScript.js">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Scripts\EnemyInventoryScript.js">
     <Files>
-      <File FileName="Assets\Scripts\AnimationTriggererScript.js" Line="5" Column="1" />
+      <File FileName="Assets\Scripts\EnemyInventoryScript.js" Line="77" Column="37" />
+      <File FileName="Assets\Scripts\AnimationTriggererScript.js" Line="17" Column="55" />
+      <File FileName="Assets\Scripts\PickableItemScript.js" Line="17" Column="43" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>

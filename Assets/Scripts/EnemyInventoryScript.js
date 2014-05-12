@@ -74,3 +74,8 @@ function setItem (newItem : ItemType){
 		enemyItem = newItem;
 }
 
+function OnTriggerEnter (coll: Collider){
+	print("TAG: "+coll.tag);
+
+}
+
