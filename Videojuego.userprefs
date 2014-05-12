@@ -1,8 +1,9 @@
 ﻿<Properties>
-  <MonoDevelop.Ide.Workspace />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Scripts\MovementScript.cs">
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" PreferredExecutionTarget="MonoDevelop.Default" />
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Scripts\PickableItemScript.js">
     <Files>
-      <File FileName="Assets\Scripts\MovementScript.cs" Line="37" Column="30" />
+      <File FileName="Assets\Scripts\PickableItemScript.js" Line="24" Column="33" />
+      <File FileName="Assets\Scripts\EnemyInventoryScript.js" Line="73" Column="6" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
