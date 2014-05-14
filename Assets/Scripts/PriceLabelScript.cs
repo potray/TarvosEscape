@@ -25,6 +25,6 @@ public class PriceLabelScript : MonoBehaviour {
 		if (currentUpgrade != upgradeScript.maxUpgrades)
 			label.text = upgradeScript.getPrices () [currentUpgrade].ToString ();
 		else
-			label.text ="Max";
+			label.text ="Max!";
 	}
 }
