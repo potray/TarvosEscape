@@ -14,16 +14,16 @@ var scanFrequency = 1.0;
 // the current target
 private var target : Transform;
 
-
+// We add the animation and movement component for the enemy AI.
 function Start() {
 	// set up repeating scan for new targets:
-	InvokeRepeating("ScanForTarget", 0, scanFrequency );
+	//InvokeRepeating("ScanForTarget", 0, scanFrequency);
 	enemyCoins = 0;
 }
 
 function Update() {
 	// we rotate to look at the target every frame (if there is one)
-	if (target != null) {
+/*	if (target != null) {
 		transform.LookAt(target);
 		
 		//  Hacemos que ande hacia el objeto mas cercano.
@@ -36,6 +36,7 @@ function Update() {
 			animPlayer.SetFloat("Walk", 0);
 
 	}
+	*/
 }
 
 function ScanForTarget() {
