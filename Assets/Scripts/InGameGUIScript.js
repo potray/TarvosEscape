@@ -10,6 +10,8 @@ var gun : GameObject;
 var knife : GameObject;
 var gravigun : GameObject;
 var rocketlauncher : GameObject;
+var jetpack : GameObject;
+var shield : GameObject;
 
 function Start () {
 	//Busco el script en la jerarquia, lo tiene el padre.
@@ -30,12 +32,12 @@ function Update () {
 		switch (playerItem){
 			case ItemType.Gun:
 				nextItem = gun;
-				print("Activare gun");
 				break;
 			case ItemType.RocketLauncher:
 				nextItem = rocketlauncher;
 				break;
 			case ItemType.Shield:
+				nextItem = shield;
 				break;
 			case ItemType.Gravigun:
 				nextItem = gravigun;
@@ -44,6 +46,7 @@ function Update () {
 				nextItem = knife;
 				break;
 			case ItemType.Wings:
+				nextItem = jetpack;
 				break;		
 			case ItemType.Empty:
 				nextItem = null;
