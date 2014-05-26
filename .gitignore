@@ -6,3 +6,11 @@
 *.csproj
 *.unityproj
 *.sln
+Assets/Animations/Locomotion Setup/Skyboxes.meta
+Assets/Animations/Locomotion Setup/Skyboxes/Textures.meta
+Assets/Animations/Locomotion Setup/Skyboxes/Textures/Sunny1.meta
+Assets/Animators.meta
+Assets/Plugins/GameDraw/Primitives/OBJ.meta
+Assets/Scenes.meta
+Assets/SciFi level 2/Editor/Image Effects.meta
+Assets/SciFi level/Standard Assets/Character Controllers/Sources/Scripts.meta

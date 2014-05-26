@@ -1,8 +1,9 @@
 ﻿<Properties>
-  <MonoDevelop.Ide.Workspace />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\SciFi level\Standard Assets\Image Effects (Pro Only)\DepthOfField34.js">
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" PreferredExecutionTarget="MonoDevelop.Default" />
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Standard Assets\Scripts\EnemyInventoryScript.js">
     <Files>
-      <File FileName="Assets\SciFi level\Standard Assets\Image Effects (Pro Only)\DepthOfField34.js" Line="344" Column="1" />
+      <File FileName="Assets\Scripts\EnemyMovementScript.js" Line="13" Column="4" />
+      <File FileName="Assets\Standard Assets\Scripts\EnemyInventoryScript.js" Line="1" Column="1" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
