@@ -8,6 +8,7 @@ enum TriggerType {Normal, Activated};
 var type : TriggerType = TriggerType.Normal;
 var animated = false;
 var activationAudio : AudioClip;
+var activationAudioSource : AudioSource;
 
 function Start () {
 }
@@ -35,7 +36,7 @@ function OnTriggerStay (){
 			if (actionPressed && !animated){
 				anim.Play();
 				if (activationAudio != null)
-					AudioSource.PlayClipAtPoint(activationAudio, transform.position);
+					activationAudioSource.Play();
 				animated = true;
 			}				
 		break;
