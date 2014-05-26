@@ -23,7 +23,7 @@ function Start() {
 
 function Update() {
 	// we rotate to look at the target every frame (if there is one)
-	if (target != null) {
+	/*if (target != null) {
 		transform.LookAt(target);
 		
 		//  Hacemos que ande hacia el objeto mas cercano.
@@ -35,7 +35,7 @@ function Update() {
 		else
 			animPlayer.SetFloat("Walk", 0);
 
-	}
+	}*/
 }
 
 function ScanForTarget() {
