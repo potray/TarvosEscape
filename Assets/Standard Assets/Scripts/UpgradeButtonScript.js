@@ -125,8 +125,10 @@ function OnClick (){
 			break;
 		case buttonTypes.Exit:
 			Application.LoadLevel(0);
+			break;
 		case buttonTypes.FreeCoins:
 			PlayerPrefs.SetInt("Money", PlayerPrefs.GetInt("Money") + 1000);
+			break;
 	}
 
 }

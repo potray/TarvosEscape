@@ -13,7 +13,7 @@ function Start () {
 	baseDistance = 1;
 	agent = GetComponent.<NavMeshAgent>();
 	//targetPoint = new Vector3 (-515, 500.5, -500);
-	rigid = GetComponent("Rigidbody");
+	rigid = GetComponent.<Rigidbody>();
 	agent.SetDestination(targetPoint);
 	//agent.Stop(true);
 

@@ -1,15 +1,12 @@
 ﻿<Properties>
-  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Standard Assets\Character Controllers\Sources\Scripts\FPSInputController.js">
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" PreferredExecutionTarget="MonoDevelop.Default" />
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Standard Assets\Scripts\PlayerInventoryScript.js">
     <Files>
-      <File FileName="Assets\Scripts\AnimationTriggererScript.js" Line="1" Column="1" />
-      <File FileName="Assets\Standard Assets\Character Controllers\Sources\Scripts\CharacterMotor.js" Line="1" Column="1" />
-      <File FileName="Assets\Scripts\CoinLabelScript.cs" Line="1" Column="1" />
-      <File FileName="Assets\Scripts\InGameGUIScript.js" Line="1" Column="1" />
-      <File FileName="Assets\Scripts\InGameCoinLabelScript.cs" Line="1" Column="1" />
-      <File FileName="Assets\Standard Assets\Scripts\PlayerInventoryScript.js" Line="1" Column="1" />
-      <File FileName="Assets\Standard Assets\Character Controllers\Sources\Scripts\FPSInputController.js" Line="1" Column="1" />
-      <File FileName="Assets\Scripts\PlayerAudioScript.js" Line="1" Column="1" />
+      <File FileName="Assets\Scripts\GoalScript.js" Line="1" Column="1" />
+      <File FileName="Assets\Standard Assets\Scripts\UpgradeButtonScript.js" Line="3" Column="23" />
+      <File FileName="Assets\Standard Assets\Scripts\PlayerInventoryScript.js" Line="61" Column="5" />
+      <File FileName="Assets\Scripts\InGameGUIScript.js" Line="16" Column="8" />
+      <File FileName="Assets\Standard Assets\Scripts\PickableItemScript.js" Line="3" Column="1" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>

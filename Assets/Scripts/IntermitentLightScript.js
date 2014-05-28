@@ -5,7 +5,7 @@ var myLight : Light;
 var shouldIFlick : boolean;
 
 function Start () {
-	myLight = GetComponent("Light");
+	myLight = GetComponent.<Light>();
 	shouldIFlick = true;
 }
 
