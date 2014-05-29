@@ -14,12 +14,9 @@ var waitTime: float;
 
 function Start () {
 	agent = GetComponent.<NavMeshAgent>();
-<<<<<<< HEAD
 	rigid = GetComponent("Rigidbody");
-=======
 	//targetPoint = new Vector3 (-515, 500.5, -500);
 	rigid = GetComponent.<Rigidbody>();
->>>>>>> 7eddd0890171d842edf1ae072a1bc9a292e3bc2f
 	agent.SetDestination(targetPoint);
 	jumping = false;
 	distToGround = collider.bounds.extents.y;			// Get the distance to the ground.
@@ -30,7 +27,6 @@ function Start () {
 function Update () {
 
 	if (agent.enabled == true) {
-
 		if (detectEdge()) {
 			//calculateJumpParameters();
 			jmp();
@@ -57,7 +53,6 @@ function jmp () {
 	
     //rigid.AddRelativeForce(new Vector3(0,2.5,2.5),ForceMode.Impulse);
 	//agent.Stop(true);
-	
 	jumpTime = Time.time;
 	jumping = true;
 
@@ -71,15 +66,21 @@ function detectEdge (): boolean {
 	
 	// Hay que diferenciar casos, para buscar precipicios en x, -x, z y -z.
 	
-	if (hit.position == transform.position || Mathf.Abs(hit.position.x - transform.position.x) < 0.1) {
+	if (hit.position.x == transform.position.x  && hit.position.z == transform.position.z //|| Mathf.Abs(hit.position.x - transform.position.x) < 0.01
+	) {
 		return true;
 	}
-	else	
+	else {
+		if (Input.GetKeyDown(KeyCode.V)) {
+			print("ENEMY: "+transform.position+"   -   ");
+			print("EDGE: "+hit.position);
+		}
 		return false;
+	}
 }
 
 function keepRunning() {
-
+print("GROUNDED");
 	jumping = false;
 	rigid.isKinematic = true;
 	rigid.useGravity = false;
@@ -89,7 +90,8 @@ function keepRunning() {
 
 // Using a raycast we can check if the enemy has landed.
 function isGrounded(): boolean {
-	return (Physics.Raycast(transform.position, -Vector3.up, distToGround + 0.1) && jumping);
+	// Probar collision del collider.
+	return (Physics.Raycast(transform.position, -Vector3.up, distToGround+0.1) && jumping);
 }
 
 
