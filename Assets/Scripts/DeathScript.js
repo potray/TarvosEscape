@@ -1,31 +1,32 @@
 ﻿#pragma strict
 
-static var returnPosition : Vector3;
 enum PlayerType {Player, Enemy};
-var player : PlayerType;
+static var playerRespawn : Vector3;
+static var enemyRespawn : Vector3;
+
+var enemyMovement : EnemyMovementScript;
 
 function Start () {
-
+	enemyMovement = GameObject.Find("EnemyCharacter").GetComponent.<EnemyMovementScript>();
 }
 
 function Update () {
 }
 
-function OnTriggerEnter (){
-	//print ("Trigger de prueba: se reinicia el nivel");	
-	var stringToLook : String;
-	
-	if (player == PlayerType.Player)
-		stringToLook = "Player";
+function OnTriggerEnter (coll : Collider){		
+	if (coll.name == "Player")
+		coll.transform.position = playerRespawn;
+	else if (coll.name == "EnemyCharacter"){
+		coll.transform.position = enemyRespawn;
+		enemyMovement.keepRunning();
+	}
 	else
-		stringToLook = "Enemy";
-		
-	var playerObject = GameObject.Find(stringToLook);
-	//print ("Moviendo jugador a: " + returnPosition);
-	playerObject.transform.position = returnPosition;
+		print("coll.name no esta reconocido:" + coll.name + ", " + coll.transform.position);
 }
 
-function setReturnPosition(newReturnPosition : Vector3){
-	returnPosition = newReturnPosition;
-	//print ("Nueva posicion de retorno: " + returnPosition);
+function setReturnPosition(newReturnPosition : Vector3, who : PlayerType){
+	if (who == PlayerType.Player)
+		playerRespawn = newReturnPosition;
+	else
+		enemyRespawn = newReturnPosition;
 }

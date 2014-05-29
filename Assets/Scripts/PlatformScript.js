@@ -21,11 +21,12 @@ function Start () {
 function Update () {
 }
 
-function OnTriggerExit(){
+function OnTriggerExit(coll : Collider){
 	//print("Salido de plataforma");
-	var playerObject = GameObject.Find("Player");
-	var playerPosition : Vector3 = playerObject.transform.position;
-	deathScript.setReturnPosition(playerPosition);	
+	if (coll.name == "Player")
+		deathScript.setReturnPosition(coll.transform.position, PlayerType.Player);	
+	else if (coll.name == "EnemyCharacter")
+		deathScript.setReturnPosition(coll.transform.position, PlayerType.Enemy);
 }
 
 function OnTriggerEnter(){

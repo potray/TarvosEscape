@@ -14,14 +14,14 @@ var waitTime: float;
 
 function Start () {
 	agent = GetComponent.<NavMeshAgent>();
-	rigid = GetComponent("Rigidbody");
+	rigid = GetComponent.<Rigidbody>();
 	//targetPoint = new Vector3 (-515, 500.5, -500);
 	rigid = GetComponent.<Rigidbody>();
 	agent.SetDestination(targetPoint);
 	jumping = false;
 	distToGround = collider.bounds.extents.y;			// Get the distance to the ground.
 	waitTime = 2;
-	targetPoint = new Vector3 (-485, 500.5, -510);
+	targetPoint = new Vector3 (-485, 501.5, -500);
 }
 
 function Update () {
@@ -67,7 +67,9 @@ function detectEdge (): boolean {
 	// Hay que diferenciar casos, para buscar precipicios en x, -x, z y -z.
 	
 	if (hit.position.x == transform.position.x  && hit.position.z == transform.position.z //|| Mathf.Abs(hit.position.x - transform.position.x) < 0.01
-	) {
+	) {		
+		print("ENEMY: "+transform.position+"   -   ");
+		print("EDGE: "+hit.position);
 		return true;
 	}
 	else {
