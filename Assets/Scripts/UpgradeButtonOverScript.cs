@@ -20,4 +20,11 @@ public class UpgradeButtonOverScript : MonoBehaviour {
 		else
 			UITooltip.ShowText(commonInfo);
 	}
+
+	void OnClick (){			
+		if (upgradeScript.upgrade == upgradeScript.maxUpgrades)				
+			UITooltip.ShowText (upgradeScript.infoUpgrades [upgradeScript.maxUpgrades - 1]);
+		else
+			UITooltip.ShowText (upgradeScript.infoUpgrades [upgradeScript.upgrade]);
+	}
 }

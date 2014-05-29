@@ -14,7 +14,12 @@ var waitTime: float;
 
 function Start () {
 	agent = GetComponent.<NavMeshAgent>();
+<<<<<<< HEAD
 	rigid = GetComponent("Rigidbody");
+=======
+	//targetPoint = new Vector3 (-515, 500.5, -500);
+	rigid = GetComponent.<Rigidbody>();
+>>>>>>> 7eddd0890171d842edf1ae072a1bc9a292e3bc2f
 	agent.SetDestination(targetPoint);
 	jumping = false;
 	distToGround = collider.bounds.extents.y;			// Get the distance to the ground.

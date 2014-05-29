@@ -13,6 +13,12 @@ var rocketlauncher : GameObject;
 var jetpack : GameObject;
 var shield : GameObject;
 
+static var gunUpgrade : int;
+var bullet1 : GameObject;
+var bullet2 : GameObject;
+var bullet3 : GameObject;
+var bullets : int;
+
 function Start () {
 	//Busco el script en la jerarquia, lo tiene el padre.
 	playerInventoryScript = this.transform.parent.gameObject.GetComponent(PlayerInventoryScript);
@@ -21,16 +27,43 @@ function Start () {
 	//Busco el objeto flotante para la rotacion
 	GUIFloatingItem = this.gameObject.Find("PlayerItem");
 	
-	previousItem = null;
+	//Cargar mejoras del jugador
+	gunUpgrade = PlayerPrefs.GetInt("Gun");
+	
+	previousItem = null;	
+}
+
+function hideBullets(){
+	bullet1.SetActive(false);
+	bullet2.SetActive(false);
+	bullet3.SetActive(false);
 }
 
 function Update () {
 	//Miro si se ha cambiado el item y lo actualizo
 	playerItem = playerInventoryScript.Item;
 	if (playerItem != currentItem){	
+		hideBullets();
 		//Miro cual tengo que activar.		
 		switch (playerItem){
 			case ItemType.Gun:
+				print ("gunUpgrade en GUIScript = " + gunUpgrade);
+				switch (gunUpgrade){
+					case 0:		
+						bullet1.SetActive(true);
+					break;
+					case 1:
+						bullet1.SetActive(true);
+						bullet2.SetActive(true);
+						bullet3.SetActive(true);
+					break;
+					case 2:
+						//Activar la pistola laser con una bala
+					break;
+					case 3:
+						//Activar la pistola laser con 3 balas
+					break;				
+				}
 				nextItem = gun;
 				break;
 			case ItemType.RocketLauncher:
