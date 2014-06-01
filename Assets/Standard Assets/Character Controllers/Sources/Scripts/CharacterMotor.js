@@ -336,7 +336,7 @@ function Update () {
 		UpdateFunction();
 }
 
-private function ApplyInputVelocityChange (velocity : Vector3) {	
+function ApplyInputVelocityChange (velocity : Vector3) {	
 	if (!canControl)
 		inputMoveDirection = Vector3.zero;
 	
@@ -386,7 +386,7 @@ private function ApplyInputVelocityChange (velocity : Vector3) {
 	return velocity;
 }
 
-private function ApplyGravityAndJumping (velocity : Vector3) {
+function ApplyGravityAndJumping (velocity : Vector3) {
 	
 	if (!inputJump || !canControl) {
 		jumping.holdingJumpButton = false;

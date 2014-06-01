@@ -1,6 +1,13 @@
 ﻿<Properties>
-  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
-  <MonoDevelop.Ide.Workbench />
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" PreferredExecutionTarget="MonoDevelop.Default" />
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Standard Assets\Scripts\PlayerInventoryScript.js">
+    <Files>
+      <File FileName="Assets\Standard Assets\Scripts\PlayerInventoryScript.js" Line="196" Column="39" />
+      <File FileName="Assets\Standard Assets\Character Controllers\Sources\Scripts\CharacterMotor.js" Line="31" Column="66" />
+      <File FileName="Assets\Scripts\BulletCollisionScript.js" Line="27" Column="14" />
+      <File FileName="Assets\Scripts\PlayerAudioScript.js" Line="4" Column="28" />
+    </Files>
+  </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
     <BreakpointStore />
   </MonoDevelop.Ide.DebuggingService.Breakpoints>

@@ -6,16 +6,36 @@ static var playerCoins : int = 0;
 var bulletPrefab : GameObject;
 var rocketPrefab : GameObject;
 var bulletInitialSpeed : float = 20f;
+
+//Audioclips
 var knifeClip : AudioClip;
 var rocketLauncherClip : AudioClip;
 var gunClip : AudioClip;
+var stompClip : AudioClip;
+
+var jetpackAudioSource : AudioSource;
 
 static var gunUpgrade : int;
+static var wingsUpgrade : int;
+
 static var bullets : int;
 
 var bullet1 : GameObject;
 var bullet2 : GameObject;
 var bullet3 : GameObject;
+
+//Parametros del jetpack
+var speedMultiplier : float;
+var accelerationMultiplier : float;
+var jumpHeightMultiplier : float;
+var flightDuration : float;
+
+var jetpackFirstUpgradeSpeedAdd : float;
+var jetpackSecondUpgradeTimeAdd : float;
+var jetpackThirdUpgradeCanStomp : boolean;
+
+var cm : CharacterMotor;
+var isFlying : boolean;
 
 // Para que las monedas se guarden entre niveles:
 // var playerInventoryScript : PlayerInventoryScript;
@@ -26,6 +46,23 @@ function Start () {
 	Item = ItemType.Empty;
 	playerCoins = 0;
 	gunUpgrade = PlayerPrefs.GetInt("Gun");
+	wingsUpgrade = PlayerPrefs.GetInt("Wings");
+	
+	cm  = GetComponent.<CharacterMotor>();
+	isFlying = false;	
+	
+	
+	//Cargo la mejora de jetpack
+	if (wingsUpgrade == 0)
+		jetpackFirstUpgradeSpeedAdd = 0;
+	
+	if (wingsUpgrade < 2)
+		jetpackSecondUpgradeTimeAdd = 0;
+		
+	if (wingsUpgrade == 3)
+		jetpackThirdUpgradeCanStomp = true;
+	else		
+		jetpackThirdUpgradeCanStomp = false;
 }
 
 function getPlayerCoins(){
@@ -49,6 +86,18 @@ function updateBullets(){
 }
 
 function Update () {
+
+	//Controlo en este script el que el se este volando.
+	if (isFlying && Input.GetButton("Jump")){
+		cm.grounded = true;
+		cm.ApplyGravityAndJumping (Vector3(0, 1, 0) + cm.movement.velocity);
+		cm.ApplyInputVelocityChange (Vector3(0, 1, 0) + cm.movement.velocity);
+	}
+	
+	if (isFlying && Input.GetKeyDown(KeyCode.LeftShift)){
+		endFlight();
+		stomp();
+	}	
 
 	if (Input.GetButtonDown("Fire1")){
 		switch(Item){
@@ -88,8 +137,7 @@ function Update () {
 				emptyItem();
 				break;
 			case ItemType.Wings:
-				//Temporal
-				print("Usado alas");
+				fly();
 				emptyItem();
 				break;
 		}
@@ -121,6 +169,53 @@ function setItem (newItem : ItemType){
 		break;
 		
 	}
+}
+
+function endFlight(){
+	if (isFlying){			
+		jetpackAudioSource.Stop();
+		cm.movement.maxForwardSpeed /= (speedMultiplier + jetpackFirstUpgradeSpeedAdd);	
+		cm.movement.maxSidewaysSpeed /= (speedMultiplier + jetpackFirstUpgradeSpeedAdd);	
+		cm.movement.maxBackwardsSpeed /= (speedMultiplier + jetpackFirstUpgradeSpeedAdd);	
+		cm.movement.maxGroundAcceleration  /= (accelerationMultiplier + jetpackFirstUpgradeSpeedAdd);
+		cm.movement.maxAirAcceleration /= (accelerationMultiplier + jetpackFirstUpgradeSpeedAdd);
+		cm.jumping.baseHeight /= jumpHeightMultiplier;
+		cm.jumping.extraHeight /= jumpHeightMultiplier;
+		isFlying = false;
+	}
+}
+
+function stomp(){
+	cm.movement.gravity *= 50;
+	cm.movement.maxFallSpeed *= 50;
+	
+	while (!cm.grounded){
+		yield WaitForSeconds(0.1);
+	}
+	
+	AudioSource.PlayClipAtPoint(stompClip, Camera.main.transform.position);	
+	cm.movement.gravity /= 50;
+	cm.movement.maxFallSpeed /= 50;
+	print ("Stomped!!!");
+}
+
+function fly (){	
+	
+	jetpackAudioSource.Play();
+	cm.movement.maxForwardSpeed *= (speedMultiplier + jetpackFirstUpgradeSpeedAdd);	
+	cm.movement.maxSidewaysSpeed *= (speedMultiplier + jetpackFirstUpgradeSpeedAdd);	
+	cm.movement.maxBackwardsSpeed *= (speedMultiplier + jetpackFirstUpgradeSpeedAdd);	
+	cm.movement.maxGroundAcceleration  *= (accelerationMultiplier + jetpackFirstUpgradeSpeedAdd);
+	cm.movement.maxAirAcceleration *= (accelerationMultiplier + jetpackFirstUpgradeSpeedAdd);
+	cm.jumping.baseHeight *= jumpHeightMultiplier;
+	cm.jumping.extraHeight *= jumpHeightMultiplier;
+	isFlying = true;
+	
+	yield WaitForSeconds(flightDuration + jetpackSecondUpgradeTimeAdd);
+	
+	endFlight();
+
+
 }
 
 function emptyItem (){
