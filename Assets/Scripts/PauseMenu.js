@@ -21,6 +21,9 @@ function Update () {
 	{
 		isPause = !isPause;
 		if(isPause) {
+
+			//Mostrar ratón
+			Screen.showCursor = true;
 			Time.timeScale = 0;
 			(inputController as MonoBehaviour).enabled = false;
 			camX.enabled = false;
@@ -29,6 +32,8 @@ function Update () {
 		}
 		else {
 			quitMenu();
+			//Ocultar ratón
+			Screen.showCursor = false;
 		}
 	}
 	
@@ -42,7 +47,9 @@ function OnGUI() {
 		
 		if (GUI.Button(Rect(Screen.width/2-30,Screen.height/2-70,100,30),"Resume")) {
 			// Boton de vuelta a la partida.
-			print("Resume.");
+			print("Resume.");			
+			//Ocultar ratón
+			Screen.showCursor = false;
 			quitMenu();
 		}
 		if (GUI.Button(Rect(Screen.width/2-30,Screen.height/2-20,100,30),"Options")) {

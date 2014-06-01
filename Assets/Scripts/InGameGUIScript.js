@@ -31,6 +31,10 @@ function Start () {
 	gunUpgrade = PlayerPrefs.GetInt("Gun");
 	
 	previousItem = null;	
+
+	//Ocultar ratón
+	Screen.showCursor = false;
+
 }
 
 function hideBullets(){
