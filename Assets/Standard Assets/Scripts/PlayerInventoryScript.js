@@ -94,7 +94,7 @@ function Update () {
 		cm.ApplyInputVelocityChange (Vector3(0, 1, 0) + cm.movement.velocity);
 	}
 	
-	if (isFlying && Input.GetKeyDown(KeyCode.LeftShift)){
+	if (isFlying && Input.GetKeyDown(KeyCode.LeftShift) && jetpackThirdUpgradeCanStomp){
 		endFlight();
 		stomp();
 	}	
