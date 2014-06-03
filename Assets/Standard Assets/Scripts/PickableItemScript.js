@@ -7,7 +7,7 @@ var enemyInventoryScript : EnemyInventoryScript;
 var pickupClip: AudioClip;
 
 function Start () {
-
+	enemyInventoryScript = GameObject.Find("EnemyCharacter").GetComponent.<EnemyInventoryScript>();
 }
 
 function Update () {

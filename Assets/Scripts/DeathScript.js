@@ -20,8 +20,8 @@ function OnTriggerEnter (coll : Collider){
 		coll.transform.position = enemyRespawn;
 		enemyMovement.keepRunning();
 	}
-	else
-		print("coll.name no esta reconocido:" + coll.name + ", " + coll.transform.position);
+	//else
+		//print("coll.name no esta reconocido:" + coll.name + ", " + coll.transform.position);
 }
 
 function setReturnPosition(newReturnPosition : Vector3, who : PlayerType){
