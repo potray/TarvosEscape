@@ -6,6 +6,7 @@ var startTime : float;
 var anim : Animation = null;
 var isTriggered : boolean = false;
 
+var isElevator : boolean = false;
 
 function Start () {
 	//Si la plataforma es animada, retraso la animacion y le cambio la velocidad.
@@ -29,9 +30,16 @@ function OnTriggerExit(coll : Collider){
 		deathScript.setReturnPosition(coll.transform.position, PlayerType.Enemy);
 }
 
-function OnTriggerEnter(){
+function OnTriggerEnter(coll : Collider){
 	if (isTriggered){
 		yield WaitForSeconds(startTime);
 		anim.Play();
+	}
+	if (isElevator && coll.name == "EnemyCharacter"){
+		print ("Enemigo para");
+		//Decirle al enemigo que deje de calcular nada (por ejmeplo desactivar el script)
+		yield WaitForSeconds(anim.clip.length);
+		//Decirle al enemigo que siga.
+		print ("Enemigo sigue");
 	}
 }
