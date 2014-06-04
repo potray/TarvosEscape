@@ -22,6 +22,9 @@ var waypoints : Transform[];
 
 var actualWaypoint: int;
 
+var level: String;								// This variable stores the level being played actually.
+var training : boolean;						// If we are training the enemy, we set this to true (default).
+
 /* For each level we have to add:
 	-- Waypoints
 	-- Jump coordinates
@@ -62,6 +65,7 @@ function Update () {
 		agent.SetDestination(waypoints[actualWaypoint].position);
 		readjustJumpParameters = false;
 	}
+
 }
 
 // This function returns true if the enemy is on an edge.
@@ -119,22 +123,33 @@ function enemyPositionOk (coord: Vector3):boolean {
 // Para hacerlo mas dinamico podemos usar un enfoque basado en tags: Las plataformas sobre las que el enemigo va a aterrizar en cada salto
 // tendran todas un tag comun: Empezaremos recogiendo la primera de ellas y luego se iran buscando las demas por cercania a la anterior.
 function initializeJumpCoordinates () {
-	jumpCoordinates[0] = (new Vector3(-535,502,-500));
-	jumpCoordinates[1] = (new Vector3(-515,500.5,-500));
-	jumpCoordinates[2] = (new Vector3(-485,500.5,-547.5));
-	jumpCoordinates[3] = (new Vector3(-472.5,500.5,-547.5));
-	jumpCoordinates[4] = (new Vector3(-460,500.5,-547.5));
-	jumpCoordinates[4] = (new Vector3(-420,500.5,-547.5));
-	jumpCoordinates[5] = (new Vector3(-420,500.5,-589));
-	jumpCoordinates[5] = (new Vector3(-420,500.5,-618.5));
+	if (level == "L1" && training) {
+		jumpCoordinates[0] = (new Vector3(-535,502,-500));
+		jumpCoordinates[1] = (new Vector3(-515,500.5,-500));
+		jumpCoordinates[2] = (new Vector3(-485,500.5,-547.5));
+		jumpCoordinates[3] = (new Vector3(-472.5,500.5,-547.5));
+		jumpCoordinates[4] = (new Vector3(-460,500.5,-547.5));
+		jumpCoordinates[4] = (new Vector3(-420,500.5,-547.5));
+		jumpCoordinates[5] = (new Vector3(-420,500.5,-589));
+		jumpCoordinates[5] = (new Vector3(-420,500.5,-618.5));
+	}
+	else if (level == "L2" && training) {
+		jumpCoordinates[0] = (new Vector3(-85.45547,170.8522,79.6062));
+		jumpCoordinates[1] = (new Vector3(-515,500.5,-500));
+		jumpCoordinates[2] = (new Vector3(-485,500.5,-547.5));
+		jumpCoordinates[3] = (new Vector3(-472.5,500.5,-547.5));
+		jumpCoordinates[4] = (new Vector3(-460,500.5,-547.5));
+		jumpCoordinates[4] = (new Vector3(-420,500.5,-547.5));
+		jumpCoordinates[5] = (new Vector3(-420,500.5,-589));
+		jumpCoordinates[5] = (new Vector3(-420,500.5,-618.5));	
+	}
 }
 
 // The jump parameters need to be learned from the enemy when he faces the scenary.
 // This is why we initialize them to 1 (in x and y, the only parameters used to jump, these are default values) and a 0 in z
 function initializeJumpParameters () {
 	for (var i : int = 0; i < jumpCoordinates.Length; i++) {
-		jumpParameters[i] = (new Vector3 (3,3,-3));
-		//jumpParameters[i] = (new Vector3 (Mathf.Abs(transform.position.x - jumpCoordinates[i].x),0,0));
+		jumpParameters[i] = (new Vector3 (0,5,5));
 	}
 }
 
@@ -174,6 +189,7 @@ function OnTriggerEnter (coll : Collider){
 	//print ("Colisionado en " + coll.name);		
 	if (coll.name != "Square Platform") {
 		readjustJumpParameters = true;
+		print("Reajuste");
 	}
 }
 
@@ -194,6 +210,25 @@ function initializeWaypoints () {
 	}
 }
 
+// This function sets the variable level to the level that is currently being played.
+function whichLevel() {
+	var path : String [] = EditorApplication.currentScene.Split(char.Parse("/"));
+	
+	switch(path[1]) {
+	
+		case "Level1":
+			level = "L1";
+			
+		case "Level2":
+			level = "L2";
+		
+		// Por ahora, que estamos en el editor, entrenamos con el nivel 2.
+		default:
+			level = "L2";
+	}
+
+}
+
 // Here are the initial values needed for the variables of the script.
 function initializeScriptComponents () {
 	agent = GetComponent.<NavMeshAgent>();
@@ -211,7 +246,8 @@ function initializeScriptComponents () {
 	jumpCoordinates = new Vector3 [20];
 	waypoints = new Transform[20];
 	initializeWaypoints();
-	
+	whichLevel();
+	training = true;
 	agent.SetDestination(waypoints[actualWaypoint].position);
 }
 
