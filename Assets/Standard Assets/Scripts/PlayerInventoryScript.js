@@ -1,5 +1,7 @@
 ﻿#pragma strict
 
+var finished : boolean;
+
 //He descubirto que tiene que ser estatica si o si, si no no funciona.
 static var Item : ItemType;
 static var playerCoins : int = 0;
@@ -43,6 +45,8 @@ var isFlying : boolean;
 
 
 function Start () {
+	finished = false;
+
 	Item = ItemType.Empty;
 	playerCoins = 0;
 	gunUpgrade = PlayerPrefs.GetInt("Gun");
