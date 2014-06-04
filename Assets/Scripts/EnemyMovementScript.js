@@ -30,6 +30,9 @@ var training : boolean;						// If we are training the enemy, we set this to tru
 	-- Jump coordinates
 */
 
+
+var hitinfo : RaycastHit;
+
 function Start () {
 	initializeScriptComponents();
 	initializeJumpCoordinates();
@@ -47,6 +50,7 @@ function Update () {
 	}
 	else {
 		if (isGrounded() && (Time.time - jumpTime) > waitTime) {
+		//	print ("point = " + hitinfo.transform.position + "collider = " hitinfo.collider.name);
 			keepRunning();	
 		}
 	
@@ -101,8 +105,8 @@ function keepRunning() {
 }
 
 // Using a raycast we can check if the enemy has landed.
-function isGrounded(): boolean {
-	return (Physics.Raycast(transform.position, -Vector3.up, distToGround+0.1) && jumping);
+function isGrounded(): boolean {	
+	return (Physics.Raycast(transform.position, -Vector3.up, hitinfo, distToGround+0.1) && jumping);
 }
 
 
