@@ -1,5 +1,9 @@
 ﻿#pragma strict
 
+
+import System;
+import System.IO;
+
 var agent : NavMeshAgent ;
 var rigid : Rigidbody;
 var targetPoint : Vector3;
@@ -30,9 +34,6 @@ var training : boolean;						// If we are training the enemy, we set this to tru
 	-- Jump coordinates
 */
 
-
-var hitinfo : RaycastHit;
-
 function Start () {
 	initializeScriptComponents();
 	initializeJumpCoordinates();
@@ -50,7 +51,6 @@ function Update () {
 	}
 	else {
 		if (isGrounded() && (Time.time - jumpTime) > waitTime) {
-		//	print ("point = " + hitinfo.transform.position + "collider = " hitinfo.collider.name);
 			keepRunning();	
 		}
 	
@@ -65,7 +65,7 @@ function Update () {
 	// If the enemy is passing thorugh a waypoint we can focus on the next one.
 	if (enemyPositionOk(waypoints[actualWaypoint].position)) {
 		actualWaypoint++;
-		//print ("Siguiente objetivo" + waypoints[actualWaypoint].position);
+		print ("Siguiente objetivo" + waypoints[actualWaypoint].position);
 		agent.SetDestination(waypoints[actualWaypoint].position);
 		readjustJumpParameters = false;
 	}
@@ -105,8 +105,8 @@ function keepRunning() {
 }
 
 // Using a raycast we can check if the enemy has landed.
-function isGrounded(): boolean {	
-	return (Physics.Raycast(transform.position, -Vector3.up, hitinfo, distToGround+0.1) && jumping);
+function isGrounded(): boolean {
+	return (Physics.Raycast(transform.position, -Vector3.up, distToGround+0.1) && jumping);
 }
 
 
@@ -153,7 +153,12 @@ function initializeJumpCoordinates () {
 // This is why we initialize them to 1 (in x and y, the only parameters used to jump, these are default values) and a 0 in z
 function initializeJumpParameters () {
 	for (var i : int = 0; i < jumpCoordinates.Length; i++) {
-		jumpParameters[i] = (new Vector3 (0,5,5));
+	
+		// The initial jump parameters are crucial for the learning process, and they depend on the current map.
+		if (level == "L2")
+			jumpParameters[i] = (new Vector3 (0,5,5));
+		else if (level == "L1")
+			jumpParameters[i] = (new Vector3 (3,3,-3));
 	}
 }
 
@@ -255,11 +260,49 @@ function initializeScriptComponents () {
 	agent.SetDestination(waypoints[actualWaypoint].position);
 }
 
+// When all the jump parameters have been learned, we store them in an external file, so we can
+// reclaim them when the player plays the level.
+function saveJumpParameters (file:String) {
 
-// Esto estaba en jmp:
-//	var g = Physics.gravity.magnitude; // get the gravity value
-//	var vSpeed = Mathf.Sqrt(2 * g * maxHeight); // calculate the vertical speed
-//	var totalTime = 2 * vertSpeed / g; // calculate the total time
-//	var hSpeed = maxDistance / totalTime; // calculate the horizontal speed
+	if (File.Exists(file))
+	{
+	    Debug.Log(file+" already exists.");
+	    return;
+	}
+	var sr = File.CreateText(file);
 
-//rigid.AddRelativeForce(new Vector3(0,2.5,2.5),ForceMode.Impulse);
+	for (var i : int = 0; i < actualParameters; i++) {
+		//sr.WriteLine (jumpParameters[i].x +","+jumpParameters[i].y+","+jumpParameters[i].z);
+		sr.WriteLine (jumpParameters[i]);
+	}
+
+	sr.Close();
+	print("Jump parameters saved.");
+}
+
+
+// NO FUNCIONA, ARREGLAR
+// This is the code that allows us to read a file.
+function readJumpParameters (file : String)
+{  
+	if(File.Exists(file))
+	{
+		  var sr = File.OpenText(file);
+		  var line = sr.ReadLine();
+		  var j: int = 0;
+		  
+		  while(line != null)
+		  {
+		  		//jumpParameters[j] = line;
+			    line = sr.ReadLine();
+			    j++;
+		  }    
+		  print("Jump parameters read.");
+	}
+	else
+	{
+		Debug.Log("Error opening: " + file + " for reading.");
+		return;
+	}
+}
+
