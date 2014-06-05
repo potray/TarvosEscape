@@ -15,11 +15,14 @@ var knifeClip : AudioClip;
 var rocketLauncherClip : AudioClip;
 var gunClip : AudioClip;
 var stompClip : AudioClip;
+var shieldExplosionClip : AudioClip;
 
 var jetpackAudioSource : AudioSource;
+var shieldAudioSource : AudioSource;
 
 static var gunUpgrade : int;
 static var wingsUpgrade : int;
+static var shieldUpgrade : int;
 
 static var bullets : int;
 
@@ -40,6 +43,12 @@ var jetpackThirdUpgradeCanStomp : boolean;
 var cm : CharacterMotor;
 var isFlying : boolean;
 
+//Parametros del escudo
+var isShielded : boolean;
+var shieldTime : int;
+var playerShield : GameObject;
+
+
 // Para que las monedas se guarden entre niveles:
 // var playerInventoryScript : PlayerInventoryScript;
 // Y referenciar usando playerInventoryScript.playerCoins
@@ -50,14 +59,19 @@ function Start () {
 
 	Item = ItemType.Empty;
 	playerCoins = 0;
+	
+	//Cargar mejoras
 	gunUpgrade = PlayerPrefs.GetInt("Gun");
 	wingsUpgrade = PlayerPrefs.GetInt("Wings");
+	shieldUpgrade = PlayerPrefs.GetInt("Shield");
 	
 	cm  = GetComponent.<CharacterMotor>();
 	isFlying = false;	
+	isShielded = false;
+	playerShield.SetActive(false);
 	
 	
-	//Cargo la mejora de jetpack
+	//Configurar la mejora de jetpack
 	if (wingsUpgrade == 0)
 		jetpackFirstUpgradeSpeedAdd = 0;
 	
@@ -68,6 +82,12 @@ function Start () {
 		jetpackThirdUpgradeCanStomp = true;
 	else		
 		jetpackThirdUpgradeCanStomp = false;
+		
+	//Configurar la mejora del escudo
+	if (shieldUpgrade > 0)
+		shieldTime = 4;
+	else
+		shieldTime = 2;
 }
 
 function getPlayerCoins(){
@@ -126,8 +146,7 @@ function Update () {
 				emptyItem();
 				break;
 			case ItemType.Shield:
-				//Temporal
-				print("Usado escudo");
+				shield();
 				emptyItem();
 				break;
 			case ItemType.Gravigun:
@@ -174,6 +193,38 @@ function setItem (newItem : ItemType){
 		break;
 		
 	}
+}
+
+function shield(){
+	isShielded = true;
+	shieldAudioSource.Play();
+	playerShield.SetActive(true);
+	
+	if (shieldUpgrade < 2){
+		yield WaitForSeconds(shieldTime);
+		endShield();
+	}
+}
+
+function endShield(){
+	if (isShielded){
+		isShielded = false;
+		shieldAudioSource.Stop();
+		
+		if (shieldUpgrade == 3)		
+			shieldExplode();
+		else			
+			playerShield.SetActive(false);
+	}
+}
+
+function shieldExplode(){
+	AudioSource.PlayClipAtPoint(shieldExplosionClip, Camera.main.transform.position);	
+	
+	//Shield explosion animation
+	
+	playerShield.SetActive(false);
+	
 }
 
 function endFlight(){
