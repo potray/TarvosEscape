@@ -53,7 +53,7 @@ public class GUITimerScript : MonoBehaviour {
 		//print ("Tiempo = " + minutes + ":" + seconds + ":" + miliseconds); 
 	}
 
-	string getTimeString(){
+	public string getTimeString(){
 		return (minutesString + ":" + secondsString + ":" + miliseconds.ToString ());
 	}
 }
