@@ -1,14 +1,15 @@
-﻿#pragma strict
-
-
-import System;
+﻿import System;
 import System.IO;
+import SimpleJSON;
+
 
 var agent : NavMeshAgent ;
 var rigid : Rigidbody;
 var targetPoint : Vector3;
 var jumping : boolean;
 var distToGround : float;
+
+var rayHit : RaycastHit;
 
 var jumpTime: float;
 var waitTime: float;
@@ -21,6 +22,7 @@ var actualParameters: int;
 // jumpCoordinates are the objective point for every jump.
 // waypoints store the control points that guide the enemy through the map.
 var jumpParameters : Vector3[];
+var needToLearn : boolean[];
 var jumpCoordinates: Vector3[];
 var waypoints : Transform[];
 
@@ -34,6 +36,8 @@ var training : boolean;						// If we are training the enemy, we set this to tru
 	-- Jump coordinates
 */
 
+var fileData;
+
 function Start () {
 	initializeScriptComponents();
 	initializeJumpCoordinates();
@@ -45,12 +49,15 @@ function Update () {
 	// If navmesh is enabled it means that the enemy is running, not in the air.
 	if (agent.enabled == true) {
 		if (detectEdge()) {
-			learnJumpParameters();
+			if (needToLearn[actualParameters])
+				learnJumpParameters();
 			jmp();
+			
 		}
 	}
 	else {
 		if (isGrounded() && (Time.time - jumpTime) > waitTime) {
+			print ("Rayo impactado en: " + rayHit.collider.transform.position + " se llama " + rayHit.collider.name);
 			keepRunning();	
 		}
 	
@@ -58,18 +65,37 @@ function Update () {
 	
 	// If the enemy passes through the objective coordinates in a jump, we can store the jump parameters learned.
 	if (enemyPositionOk(jumpCoordinates[actualParameters])) {
-		//print("LLEGAMOS, almacenamos "+ jumpParameters[actualParameters] + ", es la tripleta " +actualParameters);
+		print("LLEGAMOS, almacenamos "+ jumpParameters[actualParameters] + ", es la tripleta " +actualParameters);
+		saveParameters (actualParameters);
 		actualParameters++;
 	}
 	
 	// If the enemy is passing thorugh a waypoint we can focus on the next one.
 	if (enemyPositionOk(waypoints[actualWaypoint].position)) {
+		//saveParameters (actualParameters);
+		//actualParameters++;
 		actualWaypoint++;
 		print ("Siguiente objetivo" + waypoints[actualWaypoint].position);
 		agent.SetDestination(waypoints[actualWaypoint].position);
 		readjustJumpParameters = false;
 	}
 
+}
+
+function saveParameters (i : int){
+	if (i >= fileData["jumps"].AsInt){	
+		//Aumento los saltos
+		fileData["jumps"].AsInt = i;
+		
+		//Guardo el salto
+		fileData["jumpParameters"][i.ToString()]["x"].AsDouble = jumpParameters[i].x;
+		fileData["jumpParameters"][i.ToString()]["y"].AsDouble = jumpParameters[i].y;
+		fileData["jumpParameters"][i.ToString()]["z"].AsDouble = jumpParameters[i].z;
+		
+		//Guardo los datos en el fichero
+		saveFileData(level);
+		
+	}
 }
 
 // This function returns true if the enemy is on an edge.
@@ -91,6 +117,7 @@ function jmp () {
     rigid.useGravity = true;
 	rigid.velocity = Vector3(jumpParameters[actualParameters].x, jumpParameters[actualParameters].y, jumpParameters[actualParameters].z);
 
+
 	jumpTime = Time.time;
 	jumping = true;
 }
@@ -106,7 +133,7 @@ function keepRunning() {
 
 // Using a raycast we can check if the enemy has landed.
 function isGrounded(): boolean {
-	return (Physics.Raycast(transform.position, -Vector3.up, distToGround+0.1) && jumping);
+	return (Physics.Raycast(transform.position, -Vector3.up, rayHit, distToGround+0.1) && jumping);
 }
 
 
@@ -128,14 +155,11 @@ function enemyPositionOk (coord: Vector3):boolean {
 // tendran todas un tag comun: Empezaremos recogiendo la primera de ellas y luego se iran buscando las demas por cercania a la anterior.
 function initializeJumpCoordinates () {
 	if (level == "L1" && training) {
-		jumpCoordinates[0] = (new Vector3(-535,502,-500));
-		jumpCoordinates[1] = (new Vector3(-515,500.5,-500));
-		jumpCoordinates[2] = (new Vector3(-485,500.5,-547.5));
-		jumpCoordinates[3] = (new Vector3(-472.5,500.5,-547.5));
-		jumpCoordinates[4] = (new Vector3(-460,500.5,-547.5));
-		jumpCoordinates[4] = (new Vector3(-420,500.5,-547.5));
-		jumpCoordinates[5] = (new Vector3(-420,500.5,-589));
-		jumpCoordinates[5] = (new Vector3(-420,500.5,-618.5));
+		jumpCoordinates[0] = (new Vector3(-515,502,-500));
+		jumpCoordinates[1] = (new Vector3(-485,502,-547));
+		jumpCoordinates[2] = (new Vector3(-462.5,502,-547));
+		jumpCoordinates[3] = (new Vector3(-420,502,-590));
+		jumpCoordinates[4] = (new Vector3(-420,502,-618));
 	}
 	else if (level == "L2" && training) {
 		jumpCoordinates[0] = (new Vector3(-85.45547,170.8522,79.6062));
@@ -154,11 +178,21 @@ function initializeJumpCoordinates () {
 function initializeJumpParameters () {
 	for (var i : int = 0; i < jumpCoordinates.Length; i++) {
 	
-		// The initial jump parameters are crucial for the learning process, and they depend on the current map.
-		if (level == "L2")
-			jumpParameters[i] = (new Vector3 (0,5,5));
-		else if (level == "L1")
-			jumpParameters[i] = (new Vector3 (3,3,-3));
+		if (fileData["jumps"].AsInt >= i){
+			//Cargo desde el fichero
+			needToLearn[i] = false;
+			jumpParameters[i] = new Vector3 (fileData["jumpParameters"][i.ToString()]["x"].AsInt,
+											fileData["jumpParameters"][i.ToString()]["y"].AsInt,
+											fileData["jumpParameters"][i.ToString()]["z"].AsInt);
+		}
+		else{
+			// The initial jump parameters are crucial for the learning process, and they depend on the current map.
+			needToLearn[i] = true;
+			if (level == "L2")
+				jumpParameters[i] = (new Vector3 (0,5,5));
+			else if (level == "L1")
+				jumpParameters[i] = (new Vector3 (0,3,0));
+		}
 	}
 }
 
@@ -187,7 +221,7 @@ function learnJumpInX() {
 
 // In Z we always substract force, so the -Z axis is the one that allows the enemy to jump in Z coordinates.
 function learnJumpInZ () {
-		jumpParameters[actualParameters].z -= 2;
+		jumpParameters[actualParameters].z += 2;
 		jumpParameters[actualParameters].y += 1;
 		jumpParameters[actualParameters].x = 0;
 		print("PARAM ACTUAL (Z): "+ jumpParameters[actualParameters]);
@@ -233,7 +267,7 @@ function whichLevel() {
 		
 		// Por ahora, que estamos en el editor, entrenamos con el nivel 2.
 		default:
-			level = "L2";
+			level = "L1";
 	}
 
 }
@@ -252,12 +286,16 @@ function initializeScriptComponents () {
 	actualParameters = 0;
 	actualWaypoint = 0;
 	jumpParameters = new Vector3 [20];
+	needToLearn = new boolean [20];
 	jumpCoordinates = new Vector3 [20];
 	waypoints = new Transform[20];
 	initializeWaypoints();
 	whichLevel();
 	training = true;
 	agent.SetDestination(waypoints[actualWaypoint].position);
+	
+	fileData = readFileToJSON(level);
+	print (fileData["jumps"].AsInt);
 }
 
 // When all the jump parameters have been learned, we store them in an external file, so we can
@@ -280,29 +318,29 @@ function saveJumpParameters (file:String) {
 	print("Jump parameters saved.");
 }
 
+function saveFileData (file : String){
+	var fd = File.CreateText(file + ".json");
+	fd.WriteLine(fileData.ToString());
+	fd.Close();
+	print ("Datos guardados");
+}
+
 
 // NO FUNCIONA, ARREGLAR
 // This is the code that allows us to read a file.
-function readJumpParameters (file : String)
+function readFileToJSON (file : String)
 {  
-	if(File.Exists(file))
+	if(File.Exists(file + ".json"))
 	{
-		  var sr = File.OpenText(file);
-		  var line = sr.ReadLine();
-		  var j: int = 0;
+		  var sr = File.OpenText(file + ".json");
+		  return JSON.Parse(sr.ReadToEnd());
 		  
-		  while(line != null)
-		  {
-		  		//jumpParameters[j] = line;
-			    line = sr.ReadLine();
-			    j++;
-		  }    
-		  print("Jump parameters read.");
 	}
-	else
-	{
-		Debug.Log("Error opening: " + file + " for reading.");
-		return;
+	else{
+		var newFileString = "{\"jumps\":\"-1\"}";
+		var newFile = File.CreateText(file + ".json");
+		newFile.Write(newFileString);
+		newFile.Close();
 	}
 }
 

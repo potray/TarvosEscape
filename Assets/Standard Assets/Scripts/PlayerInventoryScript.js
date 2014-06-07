@@ -3,7 +3,7 @@
 var finished : boolean;
 
 //He descubirto que tiene que ser estatica si o si, si no no funciona.
-static var Item : ItemType;
+var Item : ItemType;
 static var playerCoins : int = 0;
 var extraCoins : int = 0;
 var bulletPrefab : GameObject;
@@ -57,7 +57,7 @@ var playerShield : GameObject;
 function Start () {
 	finished = false;
 
-	Item = ItemType.Empty;
+	//Item = ItemType.Empty;
 	playerCoins = 0;
 	
 	//Cargar mejoras
