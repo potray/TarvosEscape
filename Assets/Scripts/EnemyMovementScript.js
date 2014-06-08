@@ -26,6 +26,8 @@ var needToLearn : boolean[];
 var jumpCoordinates: Vector3[];
 var waypoints : Transform[];
 
+var justStarted : boolean = true;
+
 var actualWaypoint: int;
 
 var level: String;								// This variable stores the level being played actually.
@@ -47,44 +49,46 @@ function Start () {
 function Update () {
 
 	// If navmesh is enabled it means that the enemy is running, not in the air.
-	if (agent.enabled == true) {
+	/*if (agent.enabled == true) {
 		if (detectEdge()) {
-			if (needToLearn[actualParameters])
+			//if (needToLearn[actualParameters])
 				learnJumpParameters();
 			jmp();
 			
 		}
 	}
 	else {
-		if (isGrounded() && (Time.time - jumpTime) > waitTime) {
+		if (isGrounded() && (Time.time - jumpTime) > waitTime || justStarted) {
+			justStarted = false;
 			print ("Rayo impactado en: " + rayHit.collider.transform.position + " se llama " + rayHit.collider.name);
 			keepRunning();	
 		}
 	
-	}
+	}*/
 	
 	// If the enemy passes through the objective coordinates in a jump, we can store the jump parameters learned.
-	if (enemyPositionOk(jumpCoordinates[actualParameters])) {
-		print("LLEGAMOS, almacenamos "+ jumpParameters[actualParameters] + ", es la tripleta " +actualParameters);
-		saveParameters (actualParameters);
-		actualParameters++;
-	}
-	
-	// If the enemy is passing thorugh a waypoint we can focus on the next one.
-	if (enemyPositionOk(waypoints[actualWaypoint].position)) {
-		//saveParameters (actualParameters);
-		//actualParameters++;
-		actualWaypoint++;
-		print ("Siguiente objetivo" + waypoints[actualWaypoint].position);
-		agent.SetDestination(waypoints[actualWaypoint].position);
-		readjustJumpParameters = false;
-	}
+		if (enemyPositionOk(jumpCoordinates[actualParameters]) && isJustGrounded()) {
+			print("LLEGAMOS, almacenamos "+ jumpParameters[actualParameters] + ", es la tripleta " +actualParameters);
+			saveParameters (actualParameters);
+			actualParameters++;
+		}
+		
+		// If the enemy is passing thorugh a waypoint we can focus on the next one.
+		if (enemyPositionOk(waypoints[actualWaypoint].position) && isJustGrounded()) {
+			//saveParameters (actualParameters);
+			//actualParameters++;
+			actualWaypoint++;
+			print ("Siguiente objetivo" + waypoints[actualWaypoint].position);
+			agent.SetDestination(waypoints[actualWaypoint].position);
+			readjustJumpParameters = false;
+		}
 
 }
 
 function saveParameters (i : int){
-	if (i >= fileData["jumps"].AsInt){	
+	//if (i >= fileData["jumps"].AsInt){	
 		//Aumento los saltos
+		if (i > fileData["jumps"].AsInt)
 		fileData["jumps"].AsInt = i;
 		
 		//Guardo el salto
@@ -95,7 +99,7 @@ function saveParameters (i : int){
 		//Guardo los datos en el fichero
 		saveFileData(level);
 		
-	}
+	//}
 }
 
 // This function returns true if the enemy is on an edge.
@@ -115,9 +119,9 @@ function jmp () {
     
     rigid.isKinematic = false;
     rigid.useGravity = true;
-	rigid.velocity = Vector3(jumpParameters[actualParameters].x, jumpParameters[actualParameters].y, jumpParameters[actualParameters].z);
-
-
+	//rigid.velocity = Vector3(jumpParameters[actualParameters].x, jumpParameters[actualParameters].y, jumpParameters[actualParameters].z);
+	rigid.AddForce (jumpParameters[actualParameters].x, jumpParameters[actualParameters].y, jumpParameters[actualParameters].z, ForceMode.Impulse);
+	print ("Saltando con fuerza = " + jumpParameters[actualParameters]);
 	jumpTime = Time.time;
 	jumping = true;
 }
@@ -129,6 +133,8 @@ function keepRunning() {
 	rigid.useGravity = false;
 	agent.enabled = true;
 	agent.SetDestination(waypoints[actualWaypoint].position);
+	
+			print ("Siguiente objetivo" + waypoints[actualWaypoint].position);
 }
 
 // Using a raycast we can check if the enemy has landed.
@@ -136,14 +142,20 @@ function isGrounded(): boolean {
 	return (Physics.Raycast(transform.position, -Vector3.up, rayHit, distToGround+0.1) && jumping);
 }
 
+function isJustGrounded(): boolean {
+	return (Physics.Raycast(transform.position, -Vector3.up, rayHit, distToGround+0.1));
+}
+
 
 // This function measures if the enemy is in a certain position.
 function enemyPositionOk (coord: Vector3):boolean {
 
 	var condition : boolean;
-	var offset : int = 2;
+	var offset : int = 5;
 	
 	condition = (Mathf.Abs(coord.x - transform.position.x) <= offset) && (Mathf.Abs(coord.y - transform.position.y) <= offset) && (Mathf.Abs(coord.z - transform.position.z) <= offset);
+		
+//	print ("Distancia X = " + Mathf.Abs(coord.x - transform.position.x) + ", distancia y = " + Mathf.Abs(coord.y - transform.position.y) + ", distancia z = " + Mathf.Abs(coord.z - transform.position.z));
 		
 	return (condition);
 }
@@ -160,6 +172,8 @@ function initializeJumpCoordinates () {
 		jumpCoordinates[2] = (new Vector3(-462.5,502,-547));
 		jumpCoordinates[3] = (new Vector3(-420,502,-590));
 		jumpCoordinates[4] = (new Vector3(-420,502,-618));
+		jumpCoordinates[5] = (new Vector3(-420,646,-635));
+		//jumpCoordinates[6] = (new Vector3(-420,502,-618));
 	}
 	else if (level == "L2" && training) {
 		jumpCoordinates[0] = (new Vector3(-85.45547,170.8522,79.6062));
@@ -181,9 +195,9 @@ function initializeJumpParameters () {
 		if (fileData["jumps"].AsInt >= i){
 			//Cargo desde el fichero
 			needToLearn[i] = false;
-			jumpParameters[i] = new Vector3 (fileData["jumpParameters"][i.ToString()]["x"].AsInt,
-											fileData["jumpParameters"][i.ToString()]["y"].AsInt,
-											fileData["jumpParameters"][i.ToString()]["z"].AsInt);
+			jumpParameters[i] = new Vector3 (fileData["jumpParameters"][i.ToString()]["x"].AsDouble,
+											fileData["jumpParameters"][i.ToString()]["y"].AsDouble,
+											fileData["jumpParameters"][i.ToString()]["z"].AsDouble);
 		}
 		else{
 			// The initial jump parameters are crucial for the learning process, and they depend on the current map.
@@ -191,7 +205,7 @@ function initializeJumpParameters () {
 			if (level == "L2")
 				jumpParameters[i] = (new Vector3 (0,5,5));
 			else if (level == "L1")
-				jumpParameters[i] = (new Vector3 (0,3,0));
+				jumpParameters[i] = (new Vector3 (0,0,0));
 		}
 	}
 }
@@ -213,16 +227,22 @@ function learnJumpParameters() {
 
 // We will need to add force in X always, because the maps where the enemy moves don't have backflips.
 function learnJumpInX() {
-		jumpParameters[actualParameters].x += 2;
-		jumpParameters[actualParameters].y += 1;
+		jumpParameters[actualParameters].x += 0.2;
+		jumpParameters[actualParameters].y += 0.1;
+		//Si la plataforma esta al mismo nivel o mas alta aumento la y aun mas.
+		if (jumpCoordinates[actualParameters].y + 5 >= transform.position.y)
+			jumpParameters[actualParameters].y += 0.2;
 		jumpParameters[actualParameters].z = 0;
 		print("PARAM ACTUAL (X): "+ jumpParameters[actualParameters]);
 }
 
 // In Z we always substract force, so the -Z axis is the one that allows the enemy to jump in Z coordinates.
 function learnJumpInZ () {
-		jumpParameters[actualParameters].z += 2;
-		jumpParameters[actualParameters].y += 1;
+		jumpParameters[actualParameters].z -= 0.2;
+		jumpParameters[actualParameters].y += 0.1;
+		//Si la plataforma esta al mismo nivel o mas alta aumento la y aun mas.
+		if (jumpCoordinates[actualParameters].y + 5 >= transform.position.y)
+			jumpParameters[actualParameters].y += 0.2;
 		jumpParameters[actualParameters].x = 0;
 		print("PARAM ACTUAL (Z): "+ jumpParameters[actualParameters]);
 }
@@ -232,7 +252,7 @@ function OnTriggerEnter (coll : Collider){
 	//print ("Colisionado en " + coll.name);		
 	if (coll.name != "Square Platform") {
 		readjustJumpParameters = true;
-		print("Reajuste");
+		//print("Reajuste");
 	}
 }
 
@@ -269,8 +289,13 @@ function whichLevel() {
 		default:
 			level = "L1";
 	}
-
 }
+
+function setCurrentJumpParameters(param : Vector3){
+	jumpParameters[actualParameters] = param;
+	print ("Parametros cambiados cuando actualParameters = " + actualParameters);
+}
+
 
 // Here are the initial values needed for the variables of the script.
 function initializeScriptComponents () {
@@ -293,29 +318,10 @@ function initializeScriptComponents () {
 	whichLevel();
 	training = true;
 	agent.SetDestination(waypoints[actualWaypoint].position);
+			print ("Siguiente objetivo" + waypoints[actualWaypoint].position);
 	
 	fileData = readFileToJSON(level);
 	print (fileData["jumps"].AsInt);
-}
-
-// When all the jump parameters have been learned, we store them in an external file, so we can
-// reclaim them when the player plays the level.
-function saveJumpParameters (file:String) {
-
-	if (File.Exists(file))
-	{
-	    Debug.Log(file+" already exists.");
-	    return;
-	}
-	var sr = File.CreateText(file);
-
-	for (var i : int = 0; i < actualParameters; i++) {
-		//sr.WriteLine (jumpParameters[i].x +","+jumpParameters[i].y+","+jumpParameters[i].z);
-		sr.WriteLine (jumpParameters[i]);
-	}
-
-	sr.Close();
-	print("Jump parameters saved.");
 }
 
 function saveFileData (file : String){
@@ -325,8 +331,6 @@ function saveFileData (file : String){
 	print ("Datos guardados");
 }
 
-
-// NO FUNCIONA, ARREGLAR
 // This is the code that allows us to read a file.
 function readFileToJSON (file : String)
 {  

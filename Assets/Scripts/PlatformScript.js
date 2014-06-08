@@ -37,9 +37,14 @@ function OnTriggerEnter(coll : Collider){
 	}
 	if (isElevator && coll.name == "EnemyCharacter"){
 		print ("Enemigo para");
-		//Decirle al enemigo que deje de calcular nada (por ejmeplo desactivar el script)
+		var enemy = GameObject.Find("EnemyCharacter");
+		var em = enemy.GetComponent.<EnemyMovementScript>();
+		em.enabled = false;
 		yield WaitForSeconds(anim.clip.length);
 		//Decirle al enemigo que siga.
-		print ("Enemigo sigue");
+		print ("Enemigo sigue");		
+		em.enabled = true;
+		em.setCurrentJumpParameters(Vector3(0,5,10));
+		em.jmp();
 	}
 }
