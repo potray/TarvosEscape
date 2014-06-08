@@ -15,7 +15,7 @@ function Update () {
 }
 
 function OnTriggerEnter (coll : Collider){
-	print("TAG: "+coll.tag);
+	//print("TAG: "+coll.tag);
 	if (coll.tag == "Player"){
 		playerInventoryScript.setItem(item);	
 		AudioSource.PlayClipAtPoint(pickupClip, transform.position);

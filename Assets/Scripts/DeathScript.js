@@ -18,7 +18,7 @@ function OnTriggerEnter (coll : Collider){
 		coll.transform.position = playerRespawn;
 	else if (coll.name == "EnemyCharacter"){
 		coll.transform.position = enemyRespawn;
-		enemyMovement.keepRunning();
+		//enemyMovement.keepRunning();
 	}
 	//else
 		//print("coll.name no esta reconocido:" + coll.name + ", " + coll.transform.position);

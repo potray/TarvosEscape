@@ -1,12 +1,16 @@
 ﻿#pragma strict
 
-//Arrays de objectos
+//Arrays de objetos
 var pickableObjects : GameObject[];
 var pickableObjectsVisited : boolean[];
 var coins : GameObject[];
 var coinsVisited : boolean[];
 var targets : GameObject[];
 var targetsVisited : boolean[];
+
+//Objetos necesarios
+var player : GameObject;
+var goal : GameObject;
 
 //Distancias a objetos
 var closestCoinIndex : int;
@@ -15,12 +19,15 @@ var closestPickableObjectIndex : int;
 var closestPickableObjectDistance : double;
 var closestTargetIndex : int;
 var closestTargetDistance : double;
+var playerDistanceToGoal : double;
+var enemyDistanceToGoal : double;
 
 //Parametros de seleccion de nuevo objetivo
 var stopTracking : boolean;
 var pickableObjectDetectionRange : double;
 var coinDetectionRange : double;
 var targetDetectionRange : double;
+var criticalPlayerDistanceToGoal : double;
 
 //Componentes
 var navAgent : NavMeshAgent;
@@ -29,12 +36,15 @@ var rigid : Rigidbody;
 //Variables auxiliares
 var navDestinationObject : GameObject;
 var navDestinationObjectType : String;
+var playerPriority : boolean;
+var enemyCheated : boolean;
 
 //Variables de salto
 var distToGround : double;	
 
 function Update () {
 	if (!stopTracking){
+		//Si llega a un objetivo, hace lo que tenga que hacer.
 		if (isTargetCloseEnough()){
 			print ("He llegado a mi objetivo");
 			switch (navDestinationObjectType){
@@ -60,7 +70,21 @@ function Update () {
 			}
 			//Necesito una doble comprobacion.
 			if (!stopTracking)
-				selectBestTarget();
+				selectBestTarget("Normal");
+		}
+		
+		//Si el jugador esta demasiado cerca, recalcula.
+		if (((playerDistanceToGoal + criticalPlayerDistanceToGoal) <= enemyDistanceToGoal) && !playerPriority){
+			playerPriority = true;
+			selectBestTarget("Target");
+			print ("Enemigo se ha quedado retrasado, corriendo al objetivo!!");
+			//Trampa
+			enemyCheated = true;
+			navAgent.speed *= 4;
+		}
+		if (playerDistanceToGoal + criticalPlayerDistanceToGoal > enemyDistanceToGoal && enemyCheated){
+			enemyCheated = false;
+			navAgent.speed /= 4;
 		}
 	}		
 }
@@ -72,10 +96,18 @@ function Start () {
 	findPickableObjects();
 	findCoins();
 	findTargets();
+	
 	stopTracking = false;
+	playerPriority = false;
+	enemyCheated = false;
 	distToGround = collider.bounds.extents.y;	
 	getComponents();
-	selectBestTarget();
+	player = GameObject.Find ("Player");
+	goal = GameObject.Find ("Goal");
+	
+	InvokeRepeating("calculateDistancesToGoal", 0, 0.2);
+	
+	selectBestTarget("Normal");
 }
 
 function findPickableObjects(){
@@ -114,12 +146,12 @@ function getComponents(){
 FUNCIONES DE TOMA DE DECISIONES
 *************************************************/
 
-function selectBestTarget (){
+function selectBestTarget (options : String){
 	searchClosestPickableObject();
 	searchClosestCoin();
 	searchClosestTarget();
 	
-	if (closestTargetDistance - targetDetectionRange < closestPickableObjectDistance - pickableObjectDetectionRange){
+	if (closestTargetDistance - targetDetectionRange < closestPickableObjectDistance - pickableObjectDetectionRange || options == "Target"){
 		 navDestinationObject = targets[closestTargetIndex];
 		 navDestinationObjectType = "Target";
 		 print ("Voy hacia el target en " + targets[closestTargetIndex].transform.position);
@@ -191,6 +223,11 @@ function searchClosestTarget(){
 	closestTargetDistance = closestDistance;
 }
 
+function calculateDistancesToGoal (){
+	playerDistanceToGoal = Mathf.Abs((player.transform.position - goal.transform.position).magnitude);
+	enemyDistanceToGoal = Math.Abs((transform.position - goal.transform.position).magnitude);
+}
+
 /*************************************************
 FUNCIONES DE MOVIMIENTO
 *************************************************/
@@ -218,7 +255,7 @@ function jump(parameters : Vector3){
     rigid.useGravity = false;	
 	stopTracking = false;
 	
-	selectBestTarget();
+	selectBestTarget("Normal");
 }
 
 function isGrounded() : boolean{

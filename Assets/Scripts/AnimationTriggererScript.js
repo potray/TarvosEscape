@@ -16,7 +16,7 @@ function Start () {
 function Update () {
 }
 
-function OnTriggerEnter (){
+function OnTriggerEnter (coll : Collider){
 	switch (type){
 		case TriggerType.Normal :
 			if (!animated){
@@ -28,7 +28,15 @@ function OnTriggerEnter (){
 				anim.animation[anim.animation.clip.name].time = anim.animation[anim.animation.clip.name].length;
 				anim.Play();	
 			}	
-		break;			
+		break;	
+		case TriggerType.Activated :
+			if (!animated && coll.name == "EnemyCharacter"){
+				anim.Play();
+				if (activationAudio != null)
+					activationAudioSource.Play();
+				animated = true;
+			}		
+		break;
 	}	
 }
 
