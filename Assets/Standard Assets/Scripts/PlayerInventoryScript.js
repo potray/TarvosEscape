@@ -8,7 +8,7 @@ static var playerCoins : int = 0;
 var extraCoins : int = 0;
 var bulletPrefab : GameObject;
 var rocketPrefab : GameObject;
-var bulletInitialSpeed : float = 20f;
+var bulletInitialSpeed : float = 50f;
 
 //Audioclips
 var knifeClip : AudioClip;
@@ -131,6 +131,7 @@ function Update () {
 				//Lo lanzo hacia donde apunte la camara
 				var cam : Camera = Camera.main;
 				var bullet : GameObject = Instantiate(bulletPrefab, cam.transform.position + cam.transform.forward, cam.transform.rotation);
+				bullet.GetComponent.<BulletTypeScript>().whoShooted = "Player";
 				bullet.transform.Rotate(0, -90, 0);
 				bullet.rigidbody.AddForce(cam.transform.forward * bulletInitialSpeed, ForceMode.Impulse);
 				AudioSource.PlayClipAtPoint(gunClip, Camera.main.transform.position);	

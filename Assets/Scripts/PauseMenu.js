@@ -3,14 +3,18 @@
 var isPause = false;
 var font : Font;
 var inputController : FPSInputController;
+var charController : CharacterController;
+var charMotor : CharacterMotor;
 var camX : MouseLook;
 var camY : MouseLook;
 
 function quitMenu () {
 	Time.timeScale = 1;
-	(inputController as MonoBehaviour).enabled = true;
 	camX.enabled = true;
 	camY.enabled = true;
+	//charController.enabled = true;
+	//charMotor.enabled = true;
+	inputController.enabled = true;
 	isPause = false;
 }
 
@@ -22,12 +26,13 @@ function Update () {
 		isPause = !isPause;
 		if(isPause) {
 
-			//Mostrar ratón
 			Screen.showCursor = true;
-			Time.timeScale = 0;
-			(inputController as MonoBehaviour).enabled = false;
+			inputController.enabled = false;
 			camX.enabled = false;
 			camY.enabled = false;
+	//		charMotor.enabled = false;
+			Time.timeScale = 0;
+	//		charController.enabled = false;
 
 		}
 		else {
@@ -49,8 +54,8 @@ function OnGUI() {
 			// Boton de vuelta a la partida.
 			print("Resume.");			
 			//Ocultar ratón
-			Screen.showCursor = false;
 			quitMenu();
+			Screen.showCursor = false;
 		}
 		if (GUI.Button(Rect(Screen.width/2-30,Screen.height/2-20,100,30),"Options")) {
 			// Boton de opciones.

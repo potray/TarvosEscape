@@ -1,13 +1,13 @@
 ﻿<Properties>
-  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\NewEnemyMovementScript.js">
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" PreferredExecutionTarget="MonoDevelop.Default" />
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Standard Assets\Scripts\EnemyInventoryScript.js">
     <Files>
-      <File FileName="Assets\NewEnemyMovementScript.js" Line="238" Column="43" />
-      <File FileName="Assets\EnemyMarkScript.js" Line="5" Column="30" />
-      <File FileName="Assets\Scripts\InGameGUIScript.js" Line="48" Column="1" />
-      <File FileName="Assets\Standard Assets\Scripts\EnemyInventoryScript.js" Line="63" Column="3" />
-      <File FileName="Assets\Scripts\EnemyMovementScript.js" Line="63" Column="60" />
-      <File FileName="Assets\Scripts\AnimationTriggererScript.js" Line="47" Column="2" />
+      <File FileName="Assets\Scripts\PlayerAudioScript.js" Line="6" Column="11" />
+      <File FileName="Assets\Scripts\BulletCollisionScript.js" Line="65" Column="54" />
+      <File FileName="Assets\Scripts\PauseMenu.js" Line="33" Column="4" />
+      <File FileName="Assets\NGUI\Examples\Scripts\GUITimerScript.cs" Line="1" Column="1" />
+      <File FileName="Assets\Standard Assets\Scripts\EnemyInventoryScript.js" Line="53" Column="4" />
+      <File FileName="Assets\Standard Assets\Scripts\PlayerInventoryScript.js" Line="134" Column="25" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>

@@ -5,6 +5,7 @@ var item : ItemType;
 var playerInventoryScript : PlayerInventoryScript;
 var enemyInventoryScript : EnemyInventoryScript;
 var pickupClip: AudioClip;
+var enemyPickupClip : AudioClip;
 
 function Start () {
 	enemyInventoryScript = GameObject.Find("EnemyCharacter").GetComponent.<EnemyInventoryScript>();
@@ -23,7 +24,7 @@ function OnTriggerEnter (coll : Collider){
 	}
 	else if (coll.tag == "Enemy") {
 		enemyInventoryScript.setItem(item);
-		AudioSource.PlayClipAtPoint(pickupClip, transform.position);
+		AudioSource.PlayClipAtPoint(enemyPickupClip, transform.position);
 		Destroy(this.gameObject);
 	}
 }

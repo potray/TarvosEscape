@@ -3,6 +3,7 @@
 var jumpClip : AudioClip;
 var runSource : AudioSource;
 var ouchClip : AudioClip;
+var EnemyOuchClip : AudioClip;
 
 var vertical : boolean;
 var horizontal : boolean;
@@ -42,4 +43,8 @@ function Update () {
 
 function ouch(){
 	AudioSource.PlayClipAtPoint(ouchClip, transform.position);		
+}
+
+function enemyOuch(){
+	AudioSource.PlayClipAtPoint(EnemyOuchClip, transform.position);	
 }

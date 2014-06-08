@@ -27,7 +27,7 @@ public class GUITimerScript : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		if (!finished) {
+		if (!finished && Time.timeScale == 1) {
 			time += Time.smoothDeltaTime;
 			translateTime ();	
 		}

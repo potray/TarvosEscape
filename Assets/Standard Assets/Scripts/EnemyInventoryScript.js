@@ -3,67 +3,57 @@
 static var enemyCoins : int = 0;
 static var enemyItem : ItemType;
 var animPlayer : Animator;
+var player : GameObject;
 
-// the tag to search for (set this value in the inspector)
-var searchTag = "PCoin";
+var bulletInitialSpeed : float = 100f;
+var bulletPrefab : GameObject;
 
-// the frequency with which to re-scan for new nearest target in seconds
-// (set in inspector)
-var scanFrequency = 1.0;
-
-// the current target
-private var target : Transform;
-
+//Clips de audio
+var gunClip : AudioClip;
 
 function Start() {
-	// set up repeating scan for new targets:
-	InvokeRepeating("ScanForTarget", 0, scanFrequency );
 	enemyCoins = 0;
+	enemyItem = ItemType.Empty;
+	player = GameObject.Find("Player");
 }
 
 function Update() {
-	// we rotate to look at the target every frame (if there is one)
-	/*if (target != null) {
-		transform.LookAt(target);
-		
-		//  Hacemos que ande hacia el objeto mas cercano.
-		var dist = (target.transform.position - transform.position).sqrMagnitude;
-		
-	if (dist  > 0.2) {
-			animPlayer.SetFloat("Walk", 0.2);
-		}
-		else
-			animPlayer.SetFloat("Walk", 0);
-
-	}*/
-}
-
-function ScanForTarget() {
-	// this should be called less often, because it could be an expensive
-	// process if there are lots of objects to check against
-	target = GetNearestTaggedObject();
-}
-
-function GetNearestTaggedObject() : Transform {
-	// and finally the actual process for finding the nearest object:
-
-	var nearestDistanceSqr = Mathf.Infinity;
-	var taggedGameObjects = GameObject.FindGameObjectsWithTag(searchTag);
-	var nearestObj : Transform = null;
-
-	// loop through each tagged object, remembering nearest one found
-	for (var obj : GameObject in taggedGameObjects) {
-		var objectPos = obj.transform.position;
-		var distanceSqr = (objectPos - transform.position).sqrMagnitude;
-
-		if (distanceSqr < nearestDistanceSqr) {
-			nearestObj = obj.transform;
-			nearestDistanceSqr = distanceSqr;
-		}
+	//Control con el teclado para debug.
+	if (Input.GetKeyDown(KeyCode.K)){
+		shoot();
 	}
 
-	return nearestObj;
+	if (enemyItem != ItemType.Empty){
+		switch (enemyItem){
+			case ItemType.Gun:
+				shoot();
+			break;
+		}
+		setItem (ItemType.Empty);
+	}
 }
+
+function shoot(){
+	//Rotar hacia el jugador
+	var target = player.transform;
+	var duration : float = 0.35;
+	var startRot : Quaternion = transform.rotation;
+	for (var t=0.0;t<duration;t+=Time.deltaTime) {
+		var targetRot : Quaternion = Quaternion.LookRotation(target.position - transform.position); //recalculate every frame because it can change over the course of the jump
+		transform.rotation = Quaternion.Slerp(startRot, targetRot, t / duration);
+		yield;
+	}
+	print ("Apuntado");
+	//Disparar
+	
+	var bullet : GameObject = Instantiate(bulletPrefab, player.transform.position/* + transform.forward + Vector3(0,1,0)*/, transform.rotation);
+	//bullet.transform.Rotate(0, -90, 0);
+	bullet.GetComponent.<BulletTypeScript>().whoShooted = "Enemy";
+	//bullet.rigidbody.AddForce(transform.forward * bulletInitialSpeed, ForceMode.Impulse);
+	//Debug.DrawRay(transform.position, transform.forward, Color.green, 100);
+	AudioSource.PlayClipAtPoint(gunClip, transform.position, 100);		
+}
+
 
 function setItem (newItem : ItemType){
 	if (newItem == ItemType.Coin) {
