@@ -1,9 +1,12 @@
 ﻿<Properties>
-  <MonoDevelop.Ide.Workspace />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Scripts\EnemyMovementScript.js">
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" PreferredExecutionTarget="MonoDevelop.Default" />
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Standard Assets\Scripts\EnemyInventoryScript.js">
     <Files>
-      <File FileName="Assets\Standard Assets\Scripts\EnemyInventoryScript.js" Line="1" Column="1" />
-      <File FileName="Assets\Scripts\EnemyMovementScript.js" Line="186" Column="40" />
+      <File FileName="Assets\Scripts\DeathScript.js" Line="21" Column="14" />
+      <File FileName="Assets\Standard Assets\Scripts\EnemyInventoryScript.js" Line="51" Column="59" />
+      <File FileName="Assets\Scripts\EnemyMovementScript.js" Line="321" Column="70" />
+      <File FileName="Assets\Scripts\PlatformScript.js" Line="1" Column="1" />
+      <File FileName="Assets\NewEnemyMovementScript.js" Line="1" Column="1" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>

@@ -3,7 +3,7 @@
 var finished : boolean;
 
 //He descubirto que tiene que ser estatica si o si, si no no funciona.
-var Item : ItemType;
+static var Item : ItemType;
 static var playerCoins : int = 0;
 var extraCoins : int = 0;
 var bulletPrefab : GameObject;
