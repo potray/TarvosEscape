@@ -8,7 +8,7 @@ var coinsVisited : boolean[];
 var targets : GameObject[];
 var targetsVisited : boolean[];
 
-//Distancias
+//Distancias a objetos
 var closestCoinIndex : int;
 var closestCoinDistance : double;
 var closestPickableObjectIndex : int;
@@ -30,14 +30,8 @@ var rigid : Rigidbody;
 var navDestinationObject : GameObject;
 var navDestinationObjectType : String;
 
-function Start () {
-	findPickableObjects();
-	findCoins();
-	findTargets();
-	stopTracking = false;
-	getComponents();
-	selectBestTarget();
-}
+//Variables de salto
+var distToGround : double;	
 
 function Update () {
 	if (!stopTracking){
@@ -74,6 +68,15 @@ function Update () {
 /*************************************************
 FUNCIONES DE INICIALIZACION
 *************************************************/
+function Start () {
+	findPickableObjects();
+	findCoins();
+	findTargets();
+	stopTracking = false;
+	distToGround = collider.bounds.extents.y;	
+	getComponents();
+	selectBestTarget();
+}
 
 function findPickableObjects(){
 	pickableObjects = GameObject.FindGameObjectsWithTag("PickableObject");
@@ -130,7 +133,7 @@ function selectBestTarget (){
  		else{
  			navDestinationObject = coins[closestCoinIndex];
 			navDestinationObjectType = "Coin";
- 			print ("Voy hacia el objeto en " + coins[closestCoinIndex].transform.position); 			
+ 			print ("Voy hacia la moneda en " + coins[closestCoinIndex].transform.position); 			
  		}
 	}
 	
@@ -142,11 +145,13 @@ function searchClosestPickableObject(){
 	var distance : double;
 
 	for (var i = 0; i < pickableObjects.length; i++){
-		distance = Mathf.Abs((transform.position - pickableObjects[i].transform.position).magnitude);
-		if (distance < closestDistance && !pickableObjectsVisited[i]){
-			closestDistance = distance;
-			closestPickableObjectIndex = i;
-		}		
+		if (pickableObjects[i] != null){
+			distance = Mathf.Abs((transform.position - pickableObjects[i].transform.position).magnitude);
+			if (distance < closestDistance && !pickableObjectsVisited[i]){
+				closestDistance = distance;
+				closestPickableObjectIndex = i;
+			}	
+		}	
 	}	
 	
 	closestPickableObjectDistance = closestDistance;
@@ -157,11 +162,13 @@ function searchClosestCoin(){
 	var distance : double;
 
 	for (var i = 0; i < coins.length; i++){
-		distance = Mathf.Abs((transform.position - coins[i].transform.position).magnitude);
-		if (distance < closestDistance && !coinsVisited[i]){
-			closestDistance = distance;
-			closestCoinIndex = i;
-		}		
+		if (coins[i] != null){
+			distance = Mathf.Abs((transform.position - coins[i].transform.position).magnitude);
+			if (distance < closestDistance && !coinsVisited[i]){
+				closestDistance = distance;
+				closestCoinIndex = i;
+			}		
+		}
 	}	
 	
 	closestCoinDistance = closestDistance;
@@ -172,11 +179,13 @@ function searchClosestTarget(){
 	var distance : double;
 
 	for (var i = 0; i < targets.length; i++){
-		distance = Mathf.Abs((transform.position - targets[i].transform.position).magnitude);
-		if (distance < closestDistance && !targetsVisited[i]){
-			closestDistance = distance;
-			closestTargetIndex = i;
-		}		
+		if (targets[i] != null){
+			distance = Mathf.Abs((transform.position - targets[i].transform.position).magnitude);
+			if (distance < closestDistance && !targetsVisited[i]){
+				closestDistance = distance;
+				closestTargetIndex = i;
+			}		
+		}
 	}	
 	
 	closestTargetDistance = closestDistance;
@@ -192,18 +201,44 @@ function jump(parameters : Vector3){
     rigid.useGravity = true;
 	rigid.AddForce (parameters.x, parameters.y, parameters.z, ForceMode.Impulse);
 	stopTracking = true;
-	print ("stopTracking");
+	
+	yield WaitForSeconds (1);	
+	
+	var grounded : boolean = isGrounded();
+	
+	while (!grounded){
+		yield WaitForSeconds (0.1);
+		grounded = isGrounded();
+	}
+	
+	print ("Estoy en el suelo!");
+	
+	navAgent.enabled = true;
+    rigid.isKinematic = true;
+    rigid.useGravity = false;	
+	stopTracking = false;
+	
+	selectBestTarget();
 }
 
-/*function isGrounded(): boolean {
-	return (Physics.Raycast(transform.position, -Vector3.up, rayHit, distToGround+0.1) && jumping);
-}*/
+function isGrounded() : boolean{
+	var rayHit : RaycastHit;
+	var isOnFloor : boolean = Physics.Raycast(transform.position, -Vector3.up, rayHit, distToGround+0.1);
+	if (isOnFloor)
+		//print ("Impactado con " + rayHit.collider.name + " con layer = " + rayHit.collider.gameObject.layer);
+	return (isOnFloor && rayHit.collider.gameObject.layer == 8);
+}
 
 /*************************************************
 FUNCIONES AUXILIARES
 *************************************************/
 
 function isTargetCloseEnough (){
+
+	//Controlo si el objeto ha sido recogido.
+	if (navDestinationObject == null)
+		return true;
+
 	var xOffset = 0.1;
 	var yOffset = 3;
 	var zOffset = 0.1;
