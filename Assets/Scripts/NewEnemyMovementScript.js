@@ -82,7 +82,7 @@ function Update () {
 			enemyCheated = true;
 			navAgent.speed *= 4;
 		}
-		if (playerDistanceToGoal + criticalPlayerDistanceToGoal > enemyDistanceToGoal && enemyCheated){
+		if (playerDistanceToGoal + (criticalPlayerDistanceToGoal / 2) > enemyDistanceToGoal && enemyCheated){
 			enemyCheated = false;
 			navAgent.speed /= 4;			
 			playerPriority = false;

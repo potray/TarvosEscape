@@ -1,13 +1,13 @@
 ﻿<Properties>
-  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" PreferredExecutionTarget="MonoDevelop.Default" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Standard Assets\Scripts\EnemyInventoryScript.js">
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Scripts\PauseMenu.js">
     <Files>
-      <File FileName="Assets\Scripts\PlayerAudioScript.js" Line="6" Column="11" />
-      <File FileName="Assets\Scripts\BulletCollisionScript.js" Line="65" Column="54" />
-      <File FileName="Assets\Scripts\PauseMenu.js" Line="33" Column="4" />
-      <File FileName="Assets\NGUI\Examples\Scripts\GUITimerScript.cs" Line="1" Column="1" />
-      <File FileName="Assets\Standard Assets\Scripts\EnemyInventoryScript.js" Line="53" Column="4" />
-      <File FileName="Assets\Standard Assets\Scripts\PlayerInventoryScript.js" Line="134" Column="25" />
+      <File FileName="Assets\Scripts\PauseMenu.js" Line="21" Column="26" />
+      <File FileName="Assets\Scripts\EnemyMovementScript.js" Line="1" Column="1" />
+      <File FileName="Assets\Standard Assets\Scripts\Camera Scripts\SmoothFollow.js" Line="1" Column="1" />
+      <File FileName="Assets\Scripts\NewEnemyMovementScript.js" Line="1" Column="1" />
+      <File FileName="Assets\Scripts\GoalScript.js" Line="1" Column="1" />
+      <File FileName="Assets\Scripts\AnimationTriggererScript.js" Line="1" Column="1" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>

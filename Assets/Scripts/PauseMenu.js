@@ -8,6 +8,8 @@ var charMotor : CharacterMotor;
 var camX : MouseLook;
 var camY : MouseLook;
 
+var crosshair : GameObject;
+
 function quitMenu () {
 	Time.timeScale = 1;
 	camX.enabled = true;
@@ -16,6 +18,7 @@ function quitMenu () {
 	//charMotor.enabled = true;
 	inputController.enabled = true;
 	isPause = false;
+	crosshair.SetActive(true);
 }
 
  
@@ -33,6 +36,7 @@ function Update () {
 	//		charMotor.enabled = false;
 			Time.timeScale = 0;
 	//		charController.enabled = false;
+			crosshair.SetActive(false);
 
 		}
 		else {

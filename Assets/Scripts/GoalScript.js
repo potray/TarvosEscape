@@ -10,7 +10,7 @@ var playerAudio : PlayerAudioScript;
 var enemy : GameObject;
 
 var extraMoney : int;
-var timePenalization : double;
+var timePenalization : int;
 
 var playerInventory : PlayerInventoryScript;
 
@@ -59,14 +59,14 @@ function OnTriggerEnter (coll : Collider){
 			case "Player":
 				print ("Jugador ha llegado antes");		
 				
-				playerInventory.extraCoins = Math.Abs(extraMoney / (Time.time /10));
+				playerInventory.extraCoins = Math.Abs(extraMoney / (Time.time /timePenalization));
 				//Desactivo el letrero de perder
 				loseLabel.SetActive(false);
 			break;
 			case "EnemyCharacter":
 				print ("Enemigo ha llegado antes");
 				
-				var looseMoney = extraMoney - Mathf.Abs((enemy.transform.position - player.transform.position).magnitude / (Time.time /10));
+				var looseMoney = extraMoney - Mathf.Abs((enemy.transform.position - player.transform.position).magnitude / (Time.time / timePenalization));
 				
 				if (looseMoney < 0)
 					looseMoney = 0;

@@ -275,7 +275,8 @@ function initializeWaypoints () {
 
 // This function sets the variable level to the level that is currently being played.
 function whichLevel() {
-	var path : String [] = EditorApplication.currentScene.Split(char.Parse("/"));
+	//TODO: esto lo he tenido que cambiar para que construya el proyecto.
+	var path : String /*[]*/ = /*EditorApplication.currentScene.Split(char.Parse("/"))*/"";
 	
 	switch(path[1]) {
 	

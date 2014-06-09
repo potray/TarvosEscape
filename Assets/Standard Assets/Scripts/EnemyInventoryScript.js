@@ -49,17 +49,19 @@ function shoot(){
 	//Compruebo si el enemigo ve al jugador.
 	
 	//Necesito una mascara para ignorar ciertas capas del escenario. No quiero que el rayo impacte sobre monedas, el enemigo, objeto ni objetivos.
-	var coinLayer = 0;
-	var enemyLayer = 1;
-	var pickableObjectLayer = 12;
-	var enemyMarkLayer = 13;
+	/*var coinLayer : int = 15;
+	var enemyLayer : int = 13;
+	var pickableObjectLayer : int = 16;
+	var enemyMarkLayer : int = 12;
 	
-	var mask = (1 << coinLayer) | (1 << enemyLayer) | (1 << pickableObjectLayer) | (1 << enemyMarkLayer);
-	
+	var mask : byte = ~((1 << coinLayer) | (1 << enemyLayer) | (1 << pickableObjectLayer) | (1 << enemyMarkLayer));
+	print (mask);*/
  	var hit : RaycastHit;
     var rayDirection = player.transform.position - transform.position;
- 	
- 	if (Physics.Raycast(transform.position, rayDirection, hit, mask)){
+ 	//var distance = Mathf.Abs((player.transform.position - transform.position).magnitude);
+ 	//print ("dist = " + distance);
+ 	if (Physics.Raycast(transform.position, rayDirection, hit)){
+ 		//print ("IMpatado con " + hit.transform.name);
  		if (hit.transform.tag == "Player"){	
 			var bullet : GameObject = Instantiate(bulletPrefab, player.transform.position/* + transform.forward + Vector3(0,1,0)*/, transform.rotation);
 			bullet.GetComponent.<BulletTypeScript>().whoShooted = "Enemy";
