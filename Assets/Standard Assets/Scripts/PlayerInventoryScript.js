@@ -8,7 +8,8 @@ static var playerCoins : int = 0;
 var extraCoins : int = 0;
 var bulletPrefab : GameObject;
 var rocketPrefab : GameObject;
-var bulletInitialSpeed : float = 50f;
+var bulletInitialSpeed : float;
+var rocketInitialSpeed : float;
 
 //Audioclips
 var knifeClip : AudioClip;
@@ -142,7 +143,7 @@ function Update () {
 				print("Usado lanzacohetes");
 				var camRocketLauncher : Camera = Camera.main;
 				var rocket : GameObject = Instantiate(rocketPrefab, camRocketLauncher.transform.position + camRocketLauncher.transform.forward, camRocketLauncher.transform.rotation);
-				rocket.rigidbody.AddForce(camRocketLauncher.transform.forward * bulletInitialSpeed * 2, ForceMode.Impulse);
+				rocket.rigidbody.AddForce(camRocketLauncher.transform.forward * rocketInitialSpeed, ForceMode.Impulse);
 				AudioSource.PlayClipAtPoint(rocketLauncherClip, Camera.main.transform.position);	
 				emptyItem();
 				break;

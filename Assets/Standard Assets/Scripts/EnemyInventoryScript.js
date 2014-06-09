@@ -46,12 +46,28 @@ function shoot(){
 	print ("Apuntado");
 	//Disparar
 	
-	var bullet : GameObject = Instantiate(bulletPrefab, player.transform.position/* + transform.forward + Vector3(0,1,0)*/, transform.rotation);
-	//bullet.transform.Rotate(0, -90, 0);
-	bullet.GetComponent.<BulletTypeScript>().whoShooted = "Enemy";
-	//bullet.rigidbody.AddForce(transform.forward * bulletInitialSpeed, ForceMode.Impulse);
-	//Debug.DrawRay(transform.position, transform.forward, Color.green, 100);
-	AudioSource.PlayClipAtPoint(gunClip, transform.position, 100);		
+	//Compruebo si el enemigo ve al jugador.
+	
+	//Necesito una mascara para ignorar ciertas capas del escenario. No quiero que el rayo impacte sobre monedas, el enemigo, objeto ni objetivos.
+	var coinLayer = 0;
+	var enemyLayer = 1;
+	var pickableObjectLayer = 12;
+	var enemyMarkLayer = 13;
+	
+	var mask = (1 << coinLayer) | (1 << enemyLayer) | (1 << pickableObjectLayer) | (1 << enemyMarkLayer);
+	
+ 	var hit : RaycastHit;
+    var rayDirection = player.transform.position - transform.position;
+ 	
+ 	if (Physics.Raycast(transform.position, rayDirection, hit, mask)){
+ 		if (hit.transform.tag == "Player"){	
+			var bullet : GameObject = Instantiate(bulletPrefab, player.transform.position/* + transform.forward + Vector3(0,1,0)*/, transform.rotation);
+			bullet.GetComponent.<BulletTypeScript>().whoShooted = "Enemy";
+			AudioSource.PlayClipAtPoint(gunClip, transform.position, 100); 		
+ 		}
+ 		else
+ 			print ("No puedo ver al jugador, hay un " + hit.transform.name + " en medio");
+ 	}
 }
 
 

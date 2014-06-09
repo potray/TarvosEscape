@@ -9,11 +9,10 @@ var playerAudio : PlayerAudioScript;
 
 var enemy : GameObject;
 
-var winMultiplier : float;
-var loseDivider : float;
+var extraMoney : int;
+var timePenalization : double;
 
 var playerInventory : PlayerInventoryScript;
-var isTrainingGoal : boolean = false;
 
 var loseLabel : GameObject;
 var winLabel : GameObject;
@@ -42,8 +41,8 @@ function Update () {
 }
 
 function OnTriggerEnter (coll : Collider){
-	print ("Se ha llegado en " + Time.time);
-	if (!isTrainingGoal){								
+	if (coll.name == "Player" || coll.name == "EnemyCharacter"){
+		print ("Se ha llegado en " + Time.time);				
 		//Hago como si el juego estuviera pausado.
 		Screen.showCursor = true;
 		Time.timeScale = 0;
@@ -54,23 +53,25 @@ function OnTriggerEnter (coll : Collider){
 		camY.enabled = false;				
 		playerAudio.shouldPlay = false;
 		
-		//Le sumo al inventario del jugador las monedas correspondientes
-		var enemyPerfectTime = 2000;
-		//TODO: descomentar lo de abajo
-		//var enemyPerfectTime = GameObject.Find("EnemyCharacter").GetComponent.<EnemyMovementScript>().getPerfectTime();
+		
 						
 		switch (coll.name){
 			case "Player":
 				print ("Jugador ha llegado antes");		
 				
-				playerInventory.extraCoins = (enemyPerfectTime - Mathf.Ceil(Time.time)) * winMultiplier;
+				playerInventory.extraCoins = Math.Abs(extraMoney / (Time.time /10));
 				//Desactivo el letrero de perder
 				loseLabel.SetActive(false);
 			break;
 			case "EnemyCharacter":
 				print ("Enemigo ha llegado antes");
 				
-				playerInventory.extraCoins =  (enemyPerfectTime * winMultiplier) / loseDivider;
+				var looseMoney = extraMoney - Mathf.Abs((enemy.transform.position - player.transform.position).magnitude / (Time.time /10));
+				
+				if (looseMoney < 0)
+					looseMoney = 0;
+				
+				playerInventory.extraCoins = looseMoney;
 				
 				//Desactivo el letrero de ganar
 				winLabel.SetActive(false);
@@ -81,11 +82,12 @@ function OnTriggerEnter (coll : Collider){
 		playerInventory.finished = true;
 		
 		addMoney (playerInventory.extraCoins + playerInventory.getPlayerCoins());
-	}
-	else{
-		var em : EnemyMovementScript = enemy.GetComponent.<EnemyMovementScript>();
-		//em.saveParameters();
-	}		
+		
+		//Si el jugador tenia un jetpack o un escudo se los quito
+		playerInventory.endShield();
+		playerInventory.endFlight();
+	
+	}	
 }
 
 function addMoney(money : int){
