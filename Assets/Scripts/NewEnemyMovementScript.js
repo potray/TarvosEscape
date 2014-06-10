@@ -86,7 +86,7 @@ function Update () {
 			enemyCheated = false;
 			navAgent.speed /= 4;			
 			playerPriority = false;
-			selectBestTarget("Normal");
+			//selectBestTarget("Normal");
 			print("Peligro finalizado");
 		}
 	}		
